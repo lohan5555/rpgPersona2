@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rpg_persona2/data/models/partie.dart';
+import 'package:rpg_persona2/screens/partie_card.dart';
 import 'package:rpg_persona2/services/partieService.dart';
 import 'data/db.dart';
 
@@ -56,16 +57,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  Future<void> _createPartie() async{
-    DateTime d = DateTime.now(); DateTime f = DateTime.now();
-    final partie = Partie(name: "a", dateDebut: d, dateFin: f);
-    await partieService.insertPartie(partie);
-    await _loadPartie();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Partie créé')),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,22 +67,68 @@ class _MyHomePageState extends State<MyHomePage> {
       body: _partie.isEmpty
           ? const Center(child: Text('Aucune partie'))
           : ListView.builder(
+        padding: const EdgeInsets.all(12),
         itemCount: _partie.length,
         itemBuilder: (context, index) {
           final partie = _partie[index];
-          return ListTile(
-            title: Text(partie.name),
-            subtitle: Text(
-              'Début : ${partie.dateDebut}\nFin : ${partie.dateFin}',
-            ),
-          );
+
+          return PartieCard(partie: partie);
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _createPartie,
-        tooltip: 'Increment',
+        onPressed: _showCreatePartieDialog,
         child: const Icon(Icons.add),
       ),
+    );
+  }
+
+
+
+  Future<void> _showCreatePartieDialog() async {
+    final TextEditingController controller = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Nouvelle partie'),
+          content: TextField(
+            controller: controller,
+            decoration: const InputDecoration(
+              labelText: 'Nom de la partie',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Annuler'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (controller.text.trim().isEmpty) return;
+
+                DateTime now = DateTime.now();
+                final partie = Partie(
+                  name: controller.text.trim(),
+                  dateDebut: now,
+                  dateFin: now,
+                );
+
+                await partieService.insertPartie(partie);
+                await _loadPartie();
+
+                Navigator.pop(context);
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Partie créée')),
+                );
+              },
+              child: const Text('Créer'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
