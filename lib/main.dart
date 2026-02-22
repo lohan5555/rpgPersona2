@@ -57,6 +57,14 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Future<void> deletePartie(int id) async {
+    await partieService.deletePartie(id);
+    await _loadPartie();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Partie supprimée')),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
         itemBuilder: (context, index) {
           final partie = _partie[index];
 
-          return PartieCard(partie: partie);
+          return PartieCard(partie: partie, onDelete: () => deletePartie(_partie[index].id!));
         },
       ),
       floatingActionButton: FloatingActionButton(

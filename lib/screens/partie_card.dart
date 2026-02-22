@@ -5,10 +5,12 @@ import 'partie_detail_page.dart';
 
 class PartieCard extends StatelessWidget{
   final Partie partie;
+  final VoidCallback onDelete;
 
   const PartieCard({
     super.key,
-    required this.partie
+    required this.partie,
+    required this.onDelete
   });
 
   @override
@@ -31,20 +33,47 @@ class PartieCard extends StatelessWidget{
         },
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                partie.name,
-                style: Theme.of(context).textTheme.titleLarge,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    partie.name,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    partie.desc ?? "",
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
               ),
-              const SizedBox(height: 8),
-              Text(
-                partie.desc ?? "",
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
+              IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: () => showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: const Text('Attention'),
+                    content: const Text('Êtes-vous sur de vouloir supprimer cette partie ? Cette action est définitive.'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'Cancel'),
+                        child: const Text('Annuler'),
+                      ),
+                      TextButton(
+                          onPressed: () => {
+                            Navigator.pop(context, 'OK'),
+                            onDelete()
+                          },
+                          child: const Text('OK')),
+                    ],
+                  ),
+                ),
+              )
             ],
-          ),
+          )
         ),
       ),
     );

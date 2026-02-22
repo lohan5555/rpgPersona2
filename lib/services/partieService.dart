@@ -34,5 +34,15 @@ class PartieService{
     ];
   }
 
+  Future<void> deletePartie(int id) async {
+    final db = await DatabaseService.database;
+
+    await db?.delete(
+      'partie',
+      where: 'id = ?',
+      whereArgs: [id], //to prevent SQL injection.
+    );
+  }
+
 
 }
