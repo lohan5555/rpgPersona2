@@ -25,7 +25,7 @@ class DatabaseService {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
             desc TEXT,
-            imgPath TEXT
+            partieId INTEGER
           )
         ''');
         await db.execute('''
