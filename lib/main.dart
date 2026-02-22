@@ -3,6 +3,7 @@ import 'package:rpg_persona2/data/models/partie.dart';
 import 'package:rpg_persona2/screens/partie_card.dart';
 import 'package:rpg_persona2/services/partieService.dart';
 import 'data/db.dart';
+import 'package:flutter/services.dart';
 
 void main() async{
   // Initialisation de la base de données au premier lancement
@@ -17,6 +18,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // On empeche de basculer l'écran à l'horizontal
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'RPGpersona2',
