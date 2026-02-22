@@ -85,18 +85,33 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
   Future<void> _showCreatePartieDialog() async {
-    final TextEditingController controller = TextEditingController();
+    final TextEditingController controllerNom = TextEditingController();
+    final TextEditingController controllerDesc = TextEditingController();
 
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('Nouvelle partie'),
-          content: TextField(
-            controller: controller,
-            decoration: const InputDecoration(
-              labelText: 'Nom de la partie',
-              border: OutlineInputBorder(),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                TextField(
+                  controller: controllerNom,
+                  decoration: const InputDecoration(
+                    labelText: 'Nom de la partie',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: controllerDesc,
+                  decoration: const InputDecoration(
+                    labelText: 'Description de la partie',
+                    border: OutlineInputBorder(),
+                  ),
+                )
+              ],
             ),
           ),
           actions: [
@@ -106,11 +121,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                if (controller.text.trim().isEmpty) return;
+                if (controllerNom.text.trim().isEmpty) return;
 
                 DateTime now = DateTime.now();
                 final partie = Partie(
-                  name: controller.text.trim(),
+                  name: controllerNom.text.trim(),
+                  desc: controllerDesc.text.trim(),
                   dateDebut: now,
                   dateFin: now,
                 );

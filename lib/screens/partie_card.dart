@@ -40,11 +40,7 @@ class PartieCard extends StatelessWidget{
               ),
               const SizedBox(height: 8),
               Text(
-                'Début : ${partie.dateDebut.toLocal()}',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              Text(
-                'Fin : ${partie.dateFin.toLocal()}',
+                partie.desc ?? "",
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ],
