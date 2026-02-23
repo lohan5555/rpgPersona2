@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rpg_persona2/data/models/partie.dart';
 import 'package:rpg_persona2/data/models/perso.dart';
-import 'package:rpg_persona2/screens/perso_card.dart';
+import 'package:rpg_persona2/ui/components/perso_card.dart';
 import 'package:rpg_persona2/services/persoService.dart';
 
 class PartieDetailPage extends StatefulWidget {

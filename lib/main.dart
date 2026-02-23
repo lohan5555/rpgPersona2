@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rpg_persona2/screens/home_page.dart';
+import 'package:rpg_persona2/ui/screens/home_screen.dart';
 import 'data/db.dart';
 import 'package:flutter/services.dart';
 
