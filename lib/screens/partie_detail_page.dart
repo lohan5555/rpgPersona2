@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rpg_persona2/data/models/partie.dart';
 import 'package:rpg_persona2/data/models/perso.dart';
+import 'package:rpg_persona2/screens/perso_card.dart';
 import 'package:rpg_persona2/services/persoService.dart';
 
 class PartieDetailPage extends StatefulWidget {
@@ -31,6 +32,14 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
     });
   }
 
+  Future<void> deletePerso(int id) async {
+    await persoService.deletePerso(id);
+    await _loadPerso();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Personnage supprimée')),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +67,7 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
                 itemCount: _perso.length,
                 itemBuilder: (context, index) {
                   final perso = _perso[index];
-                  return Text(perso.name);
+                  return PersoCard(perso: perso, onDelete: () => deletePerso(_perso[index].id!));
                 },
               ),
             ),
