@@ -13,6 +13,19 @@ class Stat{
       }
       );
 
+  Stat copyWith({
+    String? name,
+    double? valeur,
+    int? persoId
+  }) {
+    return Stat(
+      id: id,
+      name: name ?? this.name,
+      valeur: valeur ?? this.valeur,
+      persoId: persoId ?? this.persoId,
+    );
+  }
+
 
   Map<String, Object?> toMap() {
     return {

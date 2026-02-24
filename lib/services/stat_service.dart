@@ -61,5 +61,16 @@ class StatService{
     );
   }
 
+  Future<void> updateStat(Stat stat) async {
+    final db = await DatabaseService.database;
+
+    await db?.update(
+      'stat',
+      stat.toMap(),
+      where: 'id = ?',
+      whereArgs: [stat.id],
+    );
+  }
+
 
 }

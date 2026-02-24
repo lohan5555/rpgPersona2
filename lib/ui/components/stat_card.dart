@@ -2,15 +2,25 @@ import 'package:flutter/material.dart';
 
 import '../../data/models/stat.dart';
 
-class StatCard extends StatelessWidget{
+class StatCard extends StatefulWidget {
   final Stat stat;
   final VoidCallback onDelete;
+  final void Function(Stat) onEdit;
 
   const StatCard({
     super.key,
     required this.stat,
-    required this.onDelete
+    required this.onDelete,
+    required this.onEdit
   });
+
+  @override
+  State<StatCard> createState() => _StatCardState();
+}
+
+class _StatCardState extends State<StatCard>{
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +41,36 @@ class StatCard extends StatelessWidget{
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      stat.name,
+                      widget.stat.name,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      stat.valeur.toString(),
+                      widget.stat.valeur.toString(),
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.minimize),
+                          onPressed: () async {
+                            final statEdit = widget.stat.copyWith(
+                                valeur: widget.stat.valeur-1,
+                            );
+                            widget.onEdit(statEdit);
+                          }
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.add),
+                          onPressed: () async {
+                            final statEdit = widget.stat.copyWith(
+                                valeur: widget.stat.valeur+1,
+                            );
+                            widget.onEdit(statEdit);
+                          }
+                        )
+                      ],
+                    )
                   ],
                 ),
                 IconButton(
@@ -56,7 +88,7 @@ class StatCard extends StatelessWidget{
                         TextButton(
                             onPressed: () => {
                               Navigator.pop(context, 'OK'),
-                              onDelete()
+                              widget.onDelete()
                             },
                             child: const Text('OK')),
                       ],

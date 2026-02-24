@@ -41,6 +41,11 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
     );
   }
 
+  Future<void> updateStat(Stat stat) async{
+    await statservice.updateStat(stat);
+    await _loadStat();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +72,10 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
               itemCount: _stat.length,
               itemBuilder: (context, index) {
                 final stat = _stat[index];
-                return StatCard(stat: stat, onDelete: () => deleteStat(_stat[index].id!));
+                return StatCard(
+                    stat: stat,
+                    onDelete: () => deleteStat(_stat[index].id!),
+                    onEdit: updateStat);
               },
             ),
           ),
