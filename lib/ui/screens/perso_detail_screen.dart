@@ -102,6 +102,7 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
                 const SizedBox(height: 8),
                 TextField(
                   controller: controllerValeur,
+                  keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     labelText: 'Valeur de la statistique',
                     border: OutlineInputBorder(),
@@ -119,6 +120,7 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
               onPressed: () async {
                 if (controllerNom.text.trim().isEmpty) return;
                 if (controllerValeur.text.trim().isEmpty) return;
+                if(int.tryParse(controllerValeur.text.trim()) == null) return;
 
                 final stat = Stat(
                     name: controllerNom.text.trim(),
