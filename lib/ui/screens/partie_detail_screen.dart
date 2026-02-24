@@ -101,6 +101,7 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
                 ),
                 const SizedBox(height: 8),
                 TextField(
+                  maxLines: 3,
                   controller: controllerDesc,
                   decoration: const InputDecoration(
                     labelText: 'Description du personnage',
