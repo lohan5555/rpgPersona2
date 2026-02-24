@@ -120,11 +120,11 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
               onPressed: () async {
                 if (controllerNom.text.trim().isEmpty) return;
                 if (controllerValeur.text.trim().isEmpty) return;
-                if(int.tryParse(controllerValeur.text.trim()) == null) return;
+                if(double.tryParse(controllerValeur.text.trim()) == null ) return;
 
                 final stat = Stat(
                     name: controllerNom.text.trim(),
-                    valeur: int.parse(controllerValeur.text.trim()),
+                    valeur: double.parse(controllerValeur.text.trim()),
                     persoId: widget.perso.id!
                 );
 

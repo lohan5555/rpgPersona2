@@ -26,7 +26,7 @@ class StatService{
         Stat(
             id: map['id'] as int,
             name: map['name'] as String,
-            valeur: map['valeur'] as int,
+            valeur: map['valeur'] as double,
             persoId: map['persoId'] as int
         ),
     ];
@@ -45,7 +45,7 @@ class StatService{
         Stat(
             id: map['id'] as int,
             name: map['name'] as String,
-            valeur: map['valeur'] as int,
+            valeur: map['valeur'] as double,
             persoId: map['persoId'] as int
         ),
     ];

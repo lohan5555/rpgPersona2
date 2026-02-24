@@ -1,7 +1,7 @@
 class Stat{
   final int? id;
   final String name;
-  final int valeur;
+  final double valeur;
   final int persoId;
 
   const Stat(
