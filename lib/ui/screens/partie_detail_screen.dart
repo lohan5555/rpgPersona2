@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rpg_persona2/data/models/partie.dart';
 import 'package:rpg_persona2/data/models/perso.dart';
 import 'package:rpg_persona2/ui/components/perso_card.dart';
-import 'package:rpg_persona2/services/persoService.dart';
+import 'package:rpg_persona2/services/perso_service.dart';
 
 class PartieDetailPage extends StatefulWidget {
   final Partie partie;
@@ -75,7 +75,7 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
         ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showCreatePersoDialog,
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add_reaction_outlined),
       ),
     );
   }

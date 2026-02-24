@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rpg_persona2/ui/components/partie_card.dart';
 
 import '../../data/models/partie.dart';
-import '../../services/partieService.dart';
+import '../../services/partie_service.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});

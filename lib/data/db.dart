@@ -32,7 +32,8 @@ class DatabaseService {
           CREATE TABLE stat(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
-            valeur INTEGER
+            valeur INTEGER,
+            persoId INTEGER
           )
         ''');
       },

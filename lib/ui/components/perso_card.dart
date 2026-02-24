@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rpg_persona2/data/models/perso.dart';
+import 'package:rpg_persona2/ui/screens/perso_detail_screen.dart';
 
 class PersoCard extends StatelessWidget{
   final Perso perso;
@@ -21,6 +22,14 @@ class PersoCard extends StatelessWidget{
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => PersoDetailPage(perso: perso),
+            ),
+          );
+        },
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(
