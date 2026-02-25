@@ -55,15 +55,6 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Statistique :'),
-              ],
-            ),
-          ),
           Expanded(
             child: _stat.isEmpty
                 ? const Center(child: Text('Aucune statistique'))
