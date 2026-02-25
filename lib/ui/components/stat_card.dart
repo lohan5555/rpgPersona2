@@ -31,6 +31,7 @@ class _StatCardState extends State<StatCard>{
         borderRadius: BorderRadius.circular(16),
       ),
       child: InkWell(
+        onLongPress: _showDeleteStatDialog,
         borderRadius: BorderRadius.circular(16),
         child: Padding(
             padding: const EdgeInsets.all(16),
@@ -73,31 +74,31 @@ class _StatCardState extends State<StatCard>{
                     )
                   ],
                 ),
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () => showDialog<String>(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: const Text('Attention'),
-                      content: const Text('Êtes-vous sur de vouloir supprimer cette statistique ? Cette action est définitive.'),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, 'Cancel'),
-                          child: const Text('Annuler'),
-                        ),
-                        TextButton(
-                            onPressed: () => {
-                              Navigator.pop(context, 'OK'),
-                              widget.onDelete()
-                            },
-                            child: const Text('OK')),
-                      ],
-                    ),
-                  ),
-                )
               ],
             )
         ),
+      ),
+    );
+  }
+
+  Future<void> _showDeleteStatDialog() async {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Attention'),
+        content: const Text('Êtes-vous sur de vouloir supprimer cette statistique ? Cette action est définitive.'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('Annuler'),
+          ),
+          TextButton(
+              onPressed: () => {
+                Navigator.pop(context, 'OK'),
+                widget.onDelete()
+              },
+              child: const Text('OK')),
+        ],
       ),
     );
   }
