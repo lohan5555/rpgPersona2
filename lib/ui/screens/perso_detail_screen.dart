@@ -17,6 +17,7 @@ class PersoDetailPage extends StatefulWidget {
 
 class _PersoDetailPageState extends State<PersoDetailPage> {
   final StatService statservice = StatService();
+  int currentPageIndex = 1;
 
   List<Stat> _stat = [];
 
@@ -52,25 +53,54 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
       appBar: AppBar(
         title: Text(widget.perso.name),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: IndexedStack(
+        index: currentPageIndex,
         children: [
-          Expanded(
-            child: _stat.isEmpty
-                ? const Center(child: Text('Aucune statistique'))
-                : ListView.builder(
-              padding: const EdgeInsets.all(12),
-              itemCount: _stat.length,
-              itemBuilder: (context, index) {
-                final stat = _stat[index];
-                return StatCard(
-                    stat: stat,
-                    onDelete: () => deleteStat(_stat[index].id!),
-                    onEdit: updateStat);
-              },
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: _stat.isEmpty
+                    ? const Center(child: Text('Aucune statistique'))
+                    : ListView.builder(
+                  padding: const EdgeInsets.all(12),
+                  itemCount: _stat.length,
+                  itemBuilder: (context, index) {
+                    final stat = _stat[index];
+                    return StatCard(
+                        stat: stat,
+                        onDelete: () => deleteStat(_stat[index].id!),
+                        onEdit: updateStat);
+                  },
+                ),
+              ),
+            ],
           ),
+          Text("général"),
+          Text("inventaire")
         ],
+      ),
+      bottomNavigationBar: NavigationBar(
+          onDestinationSelected: (int index) {
+            setState(() {
+              currentPageIndex = index;
+            });
+          },
+          selectedIndex: currentPageIndex,
+          destinations: [
+            NavigationDestination(
+                icon: Icon(Icons.query_stats_outlined),
+                selectedIcon: Icon(Icons.query_stats),
+                label: 'Statistique'),
+            NavigationDestination(
+                icon: Icon(Icons.person_outlined),
+                selectedIcon: Icon(Icons.person),
+                label: 'Général'),
+            NavigationDestination(
+                icon: Icon(Icons.backpack_outlined),
+                selectedIcon: Icon(Icons.backpack),
+                label: 'Inventaire')
+          ]
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showCreateStatDialog,
