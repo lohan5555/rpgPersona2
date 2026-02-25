@@ -74,10 +74,15 @@ class _StatCardState extends State<StatCard>{
                         widget.onEdit(statEdit);
                       }
                   ),
-                  Text(
-                    widget.stat.valeur.toString(),
-                    style: TextStyle(fontSize: 30),
-                  ),
+                  widget.stat.valeur-widget.stat.valeur.toInt()==0
+                    ?Text(
+                      widget.stat.valeur.toInt().toString(),
+                      style: TextStyle(fontSize: 30),
+                    )
+                    :Text(
+                      widget.stat.valeur.toString(),
+                      style: TextStyle(fontSize: 30),
+                    ),
                   IconButton(
                       icon: Image.asset(
                         "assets/button/plusDecimal.png",
