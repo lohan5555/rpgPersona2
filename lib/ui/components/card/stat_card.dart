@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../data/models/stat.dart';
+import '../../../data/models/stat.dart';
 
 class StatCard extends StatefulWidget {
   final Stat stat;

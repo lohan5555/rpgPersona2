@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../data/models/partie.dart';
-import '../screens/partie_detail_screen.dart';
+import '../../../data/models/partie.dart';
+import '../../screens/partie_detail_screen.dart';
 
 class PartieCard extends StatelessWidget{
   final Partie partie;

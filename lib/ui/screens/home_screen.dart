@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rpg_persona2/ui/components/partie_card.dart';
+import 'package:rpg_persona2/ui/components/card/partie_card.dart';
 
 import '../../data/models/partie.dart';
 import '../../services/partie_service.dart';

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:rpg_persona2/data/models/perso.dart';
+import 'package:rpg_persona2/ui/components/perso_general.dart';
+import 'package:rpg_persona2/ui/components/perso_inventaire.dart';
+import 'package:rpg_persona2/ui/components/perso_statistique.dart';
 
 import '../../data/models/stat.dart';
 import '../../services/stat_service.dart';
-import '../components/stat_card.dart';
+import '../components/card/stat_card.dart';
 
 class PersoDetailPage extends StatefulWidget {
   final Perso perso;
@@ -56,28 +59,9 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
       body: IndexedStack(
         index: currentPageIndex,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: _stat.isEmpty
-                    ? const Center(child: Text('Aucune statistique'))
-                    : ListView.builder(
-                  padding: const EdgeInsets.all(12),
-                  itemCount: _stat.length,
-                  itemBuilder: (context, index) {
-                    final stat = _stat[index];
-                    return StatCard(
-                        stat: stat,
-                        onDelete: () => deleteStat(_stat[index].id!),
-                        onEdit: updateStat);
-                  },
-                ),
-              ),
-            ],
-          ),
-          Text("général"),
-          Text("inventaire")
+          PersoStatistique(stat: _stat, onDelete: deleteStat, onEdit: updateStat),
+          PersoGeneral(),
+          PersoInventaire()
         ],
       ),
       bottomNavigationBar: NavigationBar(
