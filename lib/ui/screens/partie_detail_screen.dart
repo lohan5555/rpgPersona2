@@ -103,7 +103,6 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
         aspectRatio: 16 / 9,
         child: ClipRRect(
           borderRadius: const BorderRadius.vertical(
-              //bottom: Radius.circular(16),
               top: Radius.circular(16)
           ),
           child: _partie.imgPath == null
