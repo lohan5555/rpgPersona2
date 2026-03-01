@@ -27,6 +27,7 @@ class PersoService{
           id: map['id'] as int,
           name: map['name'] as String,
           desc: map['desc'] as String?,
+          note: map['note'] as String?,
           partieId: map['partieId'] as int
         ),
     ];
@@ -46,6 +47,7 @@ class PersoService{
             id: map['id'] as int,
             name: map['name'] as String,
             desc: map['desc'] as String?,
+            note: map['note'] as String?,
             partieId: map['partieId'] as int
         ),
     ];

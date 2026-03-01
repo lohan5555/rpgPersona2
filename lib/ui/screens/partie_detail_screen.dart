@@ -54,8 +54,7 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Date de début : ${widget.partie.dateDebut.toLocal()}'),
-                  Text('Date de fin : ${widget.partie.dateFin.toLocal()}'),
+                  Text('Date de début : ${widget.partie.note}'),
                 ],
               ),
             ),

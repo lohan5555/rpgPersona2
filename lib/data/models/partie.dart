@@ -2,16 +2,16 @@ class Partie{
   final int? id;
   final String name;
   final String? desc;
-  final DateTime dateDebut;
-  final DateTime dateFin;
+  final String? note;
+  final String? imgPath;
 
   const Partie(
     {
       this.id,
       required this.name,
       this.desc,
-      required this.dateDebut,
-      required this.dateFin
+      this.note,
+      this.imgPath
     }
   );
 
@@ -21,15 +21,15 @@ class Partie{
       'id': id,
       'name': name,
       'desc': desc,
-      'dateDebut': dateDebut.toIso8601String(),
-      'dateFin': dateFin.toIso8601String()
+      'note': note,
+      'imgPath': imgPath
     };
   }
 
   @override
   String toString() {
-    return 'Partie{id: $id, name: $name, desc: $desc, dateDebut: $dateDebut, '
-        'dateFin: $dateFin}';
+    return 'Partie{id: $id, name: $name, desc: $desc, note: $note, '
+        'imgPath: $imgPath}';
   }
 
 

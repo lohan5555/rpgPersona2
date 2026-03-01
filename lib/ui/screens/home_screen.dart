@@ -106,12 +106,9 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () async {
                 if (controllerNom.text.trim().isEmpty) return;
 
-                DateTime now = DateTime.now();
                 final partie = Partie(
                   name: controllerNom.text.trim(),
                   desc: controllerDesc.text.trim(),
-                  dateDebut: now,
-                  dateFin: now,
                 );
 
                 await partieService.insertPartie(partie);

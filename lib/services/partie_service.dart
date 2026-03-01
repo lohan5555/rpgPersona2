@@ -28,8 +28,8 @@ class PartieService{
           id: map['id'] as int,
           name: map['name'] as String,
           desc: map['desc'] as String?,
-          dateDebut: DateTime.parse(map['dateDebut'] as String),
-          dateFin: DateTime.parse(map['dateFin'] as String),
+          note: map['note'] as String?,
+          imgPath: map['imgPath'] as String?,
         ),
     ];
   }

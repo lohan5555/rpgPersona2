@@ -16,8 +16,8 @@ class DatabaseService {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
             desc TEXT,
-            dateDebut DATE,
-            dateFin DATE
+            note TEXT,
+            imgPath TEXT
           )
         ''');
         await db.execute('''
@@ -25,6 +25,7 @@ class DatabaseService {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
             desc TEXT,
+            note TEXT,
             partieId INTEGER
           )
         ''');
