@@ -25,7 +25,7 @@ class _StatCardState extends State<StatCard>{
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 3,
+      elevation: 0,
       margin: const EdgeInsets.only(bottom: 12),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
