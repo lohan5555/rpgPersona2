@@ -5,6 +5,7 @@ import 'package:rpg_persona2/data/models/partie.dart';
 import 'package:rpg_persona2/data/models/perso.dart';
 import 'package:rpg_persona2/ui/components/card/perso_card.dart';
 import 'package:rpg_persona2/services/perso_service.dart';
+import 'package:rpg_persona2/ui/screens/edit_partie_form.dart';
 
 class PartieDetailPage extends StatefulWidget {
   final Partie partie;
@@ -23,6 +24,7 @@ class PartieDetailPage extends StatefulWidget {
 
 class _PartieDetailPageState extends State<PartieDetailPage> {
   final PersoService persoService = PersoService();
+  late Partie _partie;
 
   List<Perso> _perso = [];
 
@@ -31,12 +33,13 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
   @override
   void initState(){
     super.initState();
-    controllerNote.text = widget.partie.note ?? '';
+    _partie = widget.partie;
+    controllerNote.text = _partie.note ?? '';
     _loadPerso();
   }
 
   Future<void> _loadPerso() async{
-    final perso = await persoService.getAllpersoByPartie(widget.partie.id!);
+    final perso = await persoService.getAllpersoByPartie(_partie.id!);
     setState(() {
       _perso = perso;
     });
@@ -54,7 +57,26 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.partie.name),
+        title: Text(_partie.name),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        actions: [
+          IconButton(
+            onPressed: () async {
+              final partieEdit = await Navigator.push<Partie>(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => EditPartieForm(partie: _partie),
+                ),
+              );
+              if (partieEdit != null) {
+                widget.onEdit(partieEdit);
+                setState(() {
+                  _partie = partieEdit;
+                });
+              }
+            },
+            icon: Icon(Icons.edit))
+        ],
       ),
       body: SafeArea(
         top: false,
@@ -84,9 +106,9 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
               //bottom: Radius.circular(16),
               top: Radius.circular(16)
           ),
-          child: widget.partie.imgPath == null
+          child: _partie.imgPath == null
               ? Image.asset('assets/placeholder.jpeg', fit: BoxFit.cover)
-              : Image.file(File(widget.partie.imgPath!), width: 25, height: 25, fit: BoxFit.cover),
+              : Image.file(File(_partie.imgPath!), width: 25, height: 25, fit: BoxFit.cover),
         ),
       )
     );
@@ -104,7 +126,7 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
           border: OutlineInputBorder(),
         ),
         onChanged: (value) {
-          Partie p = widget.partie.copyWith(note: controllerNote.text);
+          Partie p = _partie.copyWith(note: controllerNote.text);
           widget.onEdit(p);
         },
       ),
@@ -172,7 +194,7 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
                 final perso = Perso(
                   name: controllerNom.text.trim(),
                   desc: controllerDesc.text.trim(),
-                  partieId: widget.partie.id!
+                  partieId: _partie.id!
                 );
 
                 await persoService.insertPerso(perso);

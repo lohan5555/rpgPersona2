@@ -43,6 +43,9 @@ dependencies:
   #emoji picker
   emoji_picker_flutter: ^4.4.0
 
+  #image
+  image_picker: ^1.1.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

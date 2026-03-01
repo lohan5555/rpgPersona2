@@ -53,6 +53,7 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.perso.name),
       ),
       body: IndexedStack(
