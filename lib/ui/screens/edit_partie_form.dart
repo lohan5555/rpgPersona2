@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rpg_persona2/services/emoji_service.dart';
 
 import '../../data/models/partie.dart';
 import '../../services/image_service.dart';
@@ -19,11 +20,13 @@ class EditPartieForm extends StatefulWidget {
 class _EditPartieFormState extends State<EditPartieForm> {
   File? galleryFile;
   final ImageService imageService = ImageService();
+  final EmojiService emojiService = EmojiService();
 
 
   final _formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final descController = TextEditingController();
+  late String tempEmoji;
 
   @override
   void dispose() {
@@ -38,6 +41,7 @@ class _EditPartieFormState extends State<EditPartieForm> {
 
     nameController.text = widget.partie.name;
     descController.text = widget.partie.desc ?? '';
+    tempEmoji = widget.partie.emoji;
 
     if (widget.partie.imgPath != null) {
       galleryFile = File(widget.partie.imgPath!);
@@ -49,16 +53,18 @@ class _EditPartieFormState extends State<EditPartieForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: true,
-        appBar: AppBar(
-          title: const Text('Modifier une Partie'),
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          foregroundColor: Colors.black,
-        ),
-        body: SafeArea(
-            child:SingleChildScrollView(
-              child: Builder(
-                builder: (BuildContext context) {
+      resizeToAvoidBottomInset: true,
+      appBar: AppBar(
+        title: const Text('Modifier une Partie'),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        foregroundColor: Colors.black,
+      ),
+      body: SafeArea(
+        child:SingleChildScrollView(
+          child: Builder(
+            builder: (BuildContext context) {
+              return StatefulBuilder(
+                builder: (context, setStateDialog) {
                   return Padding(
                     padding: const EdgeInsets.all(20),
                     child: Center(
@@ -107,6 +113,23 @@ class _EditPartieFormState extends State<EditPartieForm> {
                               )
                           ),
                           SizedBox(height: 24),
+                          GestureDetector(
+                            onTap: () {
+                              // Ferme le clavier texte avant d'ouvrir les emojis
+                              FocusScope.of(context).unfocus();
+
+                              emojiService.showEmojiPicker(context, (emoji) {
+                                setStateDialog(() {
+                                  tempEmoji = emoji;
+                                });
+                              });
+                            },
+                            child: CircleAvatar(
+                              radius: 35,
+                              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+                              child: Text(tempEmoji, style: const TextStyle(fontSize: 35)),
+                            ),
+                          ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             child: ElevatedButton(
@@ -119,6 +142,7 @@ class _EditPartieFormState extends State<EditPartieForm> {
                                       ? null
                                       : descController.text.trim(),
                                   imgPath: galleryFile?.path,
+                                  emoji: tempEmoji
                                 );
 
                                 Navigator.pop(context, partieEdit);
@@ -131,9 +155,11 @@ class _EditPartieFormState extends State<EditPartieForm> {
                     ),
                   );
                 },
-              ),
-            )
-        ),
+              );
+            }
+          ),
+        )
+      ),
     );
   }
 
@@ -174,5 +200,4 @@ class _EditPartieFormState extends State<EditPartieForm> {
       },
     );
   }
-
 }
