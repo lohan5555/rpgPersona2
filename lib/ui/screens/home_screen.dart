@@ -44,9 +44,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> updatePartie(Partie partie) async {
     await partieService.updateParie(partie);
     await _loadPartie();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Partie modifiée')),
-    );
   }
 
   @override
