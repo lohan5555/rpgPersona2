@@ -7,6 +7,11 @@ class PersoGeneral extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return Text("général");
+    return Column(
+      children: [
+        Text("général"),
+        const Image(image: AssetImage('assets/placeholder.jpeg'))
+      ],
+    );
   }
 }

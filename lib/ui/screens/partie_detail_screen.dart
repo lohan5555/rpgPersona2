@@ -54,6 +54,7 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const Image(image: AssetImage('assets/placeholder.jpeg')),
                   Text('Date de début : ${widget.partie.note}'),
                 ],
               ),
