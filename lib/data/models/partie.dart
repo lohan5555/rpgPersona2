@@ -4,6 +4,7 @@ class Partie{
   final String? desc;
   final String? note;
   final String? imgPath;
+  final String emoji;
 
   const Partie(
     {
@@ -11,7 +12,8 @@ class Partie{
       required this.name,
       this.desc,
       this.note,
-      this.imgPath
+      this.imgPath,
+      required this.emoji
     }
   );
 
@@ -19,14 +21,16 @@ class Partie{
     String? name,
     String? desc,
     String? note,
-    String? imgPath
+    String? imgPath,
+    String? emoji
   }) {
     return Partie(
       id: id,
       name: name ?? this.name,
       desc: desc ?? this.desc,
       note: note ?? this.note,
-      imgPath: imgPath ?? this.imgPath
+      imgPath: imgPath ?? this.imgPath, 
+      emoji: emoji ?? this.emoji
     );
   }
 
@@ -37,14 +41,15 @@ class Partie{
       'name': name,
       'desc': desc,
       'note': note,
-      'imgPath': imgPath
+      'imgPath': imgPath,
+      'emoji': emoji
     };
   }
 
   @override
   String toString() {
     return 'Partie{id: $id, name: $name, desc: $desc, note: $note, '
-        'imgPath: $imgPath}';
+        'imgPath: $imgPath}, emoji $emoji';
   }
 
 

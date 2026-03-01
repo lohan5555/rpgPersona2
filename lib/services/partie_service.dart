@@ -30,6 +30,7 @@ class PartieService{
           desc: map['desc'] as String?,
           note: map['note'] as String?,
           imgPath: map['imgPath'] as String?,
+          emoji: map['emoji'] as String
         ),
     ];
   }

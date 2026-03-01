@@ -17,7 +17,8 @@ class DatabaseService {
             name TEXT,
             desc TEXT,
             note TEXT,
-            imgPath TEXT
+            imgPath TEXT,
+            emoji TEXT
           )
         ''');
         await db.execute('''
