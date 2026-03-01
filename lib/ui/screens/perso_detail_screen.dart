@@ -86,10 +86,12 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
                 label: 'Inventaire')
           ]
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showCreateStatDialog,
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: currentPageIndex==0
+        ? FloatingActionButton(
+          onPressed: _showCreateStatDialog,
+          child: const Icon(Icons.add),
+        )
+        : Container(),
     );
   }
 
