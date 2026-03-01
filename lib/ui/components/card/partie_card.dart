@@ -6,11 +6,13 @@ import '../../screens/partie_detail_screen.dart';
 class PartieCard extends StatelessWidget{
   final Partie partie;
   final VoidCallback onDelete;
+  final void Function(Partie) onEdit;
 
   const PartieCard({
     super.key,
     required this.partie,
-    required this.onDelete
+    required this.onDelete,
+    required this.onEdit
   });
 
   @override
@@ -27,7 +29,7 @@ class PartieCard extends StatelessWidget{
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => PartieDetailPage(partie: partie),
+              builder: (_) => PartieDetailPage(partie: partie, onEdit: onEdit),
             ),
           );
         },

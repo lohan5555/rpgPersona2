@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:rpg_persona2/data/models/partie.dart';
 import 'package:rpg_persona2/data/models/perso.dart';
@@ -6,8 +8,13 @@ import 'package:rpg_persona2/services/perso_service.dart';
 
 class PartieDetailPage extends StatefulWidget {
   final Partie partie;
+  final Function(Partie) onEdit;
 
-  const PartieDetailPage({super.key, required this.partie});
+  const PartieDetailPage({
+    super.key,
+    required this.partie,
+    required this.onEdit
+  });
 
   @override
   State<PartieDetailPage> createState() => _PartieDetailPageState();
@@ -19,9 +26,12 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
 
   List<Perso> _perso = [];
 
+  final TextEditingController controllerNote = TextEditingController();
+
   @override
   void initState(){
     super.initState();
+    controllerNote.text = widget.partie.note ?? '';
     _loadPerso();
   }
 
@@ -47,35 +57,72 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
         title: Text(widget.partie.name),
       ),
         body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Image(image: AssetImage('assets/placeholder.jpeg')),
-                  Text('Date de début : ${widget.partie.note}'),
-                ],
-              ),
-            ),
-            Expanded(
-              child: _perso.isEmpty
-                  ? const Center(child: Text('Aucun personnage'))
-                  : ListView.builder(
-                padding: const EdgeInsets.all(12),
-                itemCount: _perso.length,
-                itemBuilder: (context, index) {
-                  final perso = _perso[index];
-                  return PersoCard(perso: perso, onDelete: () => deletePerso(_perso[index].id!));
-                },
-              ),
-            ),
+            _header(),
+            const Divider(height: 0,),
+            _note(),
+            //const Divider(),
+            _persoList()
           ],
         ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showCreatePersoDialog,
         child: const Icon(Icons.add_reaction_outlined),
+      ),
+    );
+  }
+
+  Widget _header() {
+    return Padding(
+      padding: const EdgeInsets.only(top:12, left: 15, right: 15, bottom: 0),
+      child: AspectRatio(
+        aspectRatio: 16 / 9,
+        child: ClipRRect(
+          borderRadius: const BorderRadius.vertical(
+              //bottom: Radius.circular(16),
+              top: Radius.circular(16)
+          ),
+          child: widget.partie.imgPath == null
+              ? Image.asset('assets/placeholder.jpeg', fit: BoxFit.cover)
+              : Image.file(File(widget.partie.imgPath!), width: 25, height: 25, fit: BoxFit.cover),
+        ),
+      )
+    );
+  }
+
+  Widget _note() {
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: TextField(
+        controller: controllerNote,
+        maxLines: 6,
+        decoration: const InputDecoration(
+          labelText: 'Notes de la partie',
+          alignLabelWithHint: true,
+          border: OutlineInputBorder(),
+        ),
+        onChanged: (value) {
+          Partie p = widget.partie.copyWith(note: controllerNote.text);
+          widget.onEdit(p);
+        },
+      ),
+    );
+  }
+
+  Widget _persoList() {
+    return Expanded(
+      child: _perso.isEmpty
+          ? const Center(child: Text('Aucun personnage'))
+          : ListView.builder(
+        padding: const EdgeInsets.all(12),
+        itemCount: _perso.length,
+        itemBuilder: (context, index) {
+          final perso = _perso[index];
+          return PersoCard(
+            perso: perso,
+            onDelete: () => deletePerso(perso.id!),
+          );
+        },
       ),
     );
   }

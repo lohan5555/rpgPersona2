@@ -15,6 +15,21 @@ class Partie{
     }
   );
 
+  Partie copyWith({
+    String? name,
+    String? desc,
+    String? note,
+    String? imgPath
+  }) {
+    return Partie(
+      id: id,
+      name: name ?? this.name,
+      desc: desc ?? this.desc,
+      note: note ?? this.note,
+      imgPath: imgPath ?? this.imgPath
+    );
+  }
+
 
   Map<String, Object?> toMap() {
     return {

@@ -44,5 +44,16 @@ class PartieService{
     );
   }
 
+  Future<void> updateParie(Partie partie) async {
+    final db = await DatabaseService.database;
+
+    await db?.update(
+      'partie',
+      partie.toMap(),
+      where: 'id = ?',
+      whereArgs: [partie.id],
+    );
+  }
+
 
 }

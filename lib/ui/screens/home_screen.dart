@@ -39,6 +39,14 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Future<void> updatePartie(Partie partie) async {
+    await partieService.updateParie(partie);
+    await _loadPartie();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Partie modifiée')),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +62,10 @@ class _MyHomePageState extends State<MyHomePage> {
         itemBuilder: (context, index) {
           final partie = _partie[index];
 
-          return PartieCard(partie: partie, onDelete: () => deletePartie(_partie[index].id!));
+          return PartieCard(
+              partie: partie,
+              onDelete: () => deletePartie(_partie[index].id!),
+              onEdit: updatePartie);
         },
       ),
       floatingActionButton: FloatingActionButton(
