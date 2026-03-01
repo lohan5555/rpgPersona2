@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:rpg_persona2/data/models/partie.dart';
 import 'package:rpg_persona2/data/models/perso.dart';
 import 'package:rpg_persona2/ui/components/card/perso_card.dart';

@@ -6,7 +6,6 @@ import 'package:rpg_persona2/ui/components/perso_statistique.dart';
 
 import '../../data/models/stat.dart';
 import '../../services/stat_service.dart';
-import '../components/card/stat_card.dart';
 
 class PersoDetailPage extends StatefulWidget {
   final Perso perso;
