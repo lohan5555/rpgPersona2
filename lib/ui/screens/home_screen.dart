@@ -54,19 +54,21 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: _partie.isEmpty
-          ? const Center(child: Text('Aucune partie'))
-          : ListView.builder(
-        padding: const EdgeInsets.all(12),
-        itemCount: _partie.length,
-        itemBuilder: (context, index) {
-          final partie = _partie[index];
+      body: SafeArea(
+        child: _partie.isEmpty
+            ? const Center(child: Text('Aucune partie'))
+            : ListView.builder(
+          padding: const EdgeInsets.all(12),
+          itemCount: _partie.length,
+          itemBuilder: (context, index) {
+            final partie = _partie[index];
 
-          return PartieCard(
+            return PartieCard(
               partie: partie,
               onDelete: () => deletePartie(_partie[index].id!),
               onEdit: updatePartie);
-        },
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showCreatePartieDialog,

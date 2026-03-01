@@ -16,6 +16,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.black,
+        systemNavigationBarIconBrightness: Brightness.light,
+      ),
+    );
     // On empeche de basculer l'écran à l'horizontal
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,

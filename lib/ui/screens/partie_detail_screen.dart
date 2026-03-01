@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:rpg_persona2/data/models/partie.dart';
 import 'package:rpg_persona2/data/models/perso.dart';
 import 'package:rpg_persona2/ui/components/card/perso_card.dart';
@@ -56,15 +57,17 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
       appBar: AppBar(
         title: Text(widget.partie.name),
       ),
-        body: Column(
+      body: SafeArea(
+        top: false,
+        child: Column(
           children: [
             _header(),
             const Divider(height: 0,),
             _note(),
-            //const Divider(),
             _persoList()
           ],
         ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showCreatePersoDialog,
         child: const Icon(Icons.add_reaction_outlined),
