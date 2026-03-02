@@ -54,7 +54,24 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
   }
 
   Future<void> updatePerso(Perso perso) async {
+    //on supprime l'ancienne image si on a choisi une nouvelle
+    final oldPerso = _perso.firstWhere(
+          (p) => p.id == perso.id,
+    );
+    final oldPath = oldPerso.imgPath;
+
     await persoService.updatePerso(perso);
+
+    if (oldPath != null &&
+        oldPath != perso.imgPath &&
+        oldPath.contains("rpg_persona2") &&
+        perso.imgPath != null) {
+      final oldFile = File(oldPath);
+      if (await oldFile.exists()) {
+        await oldFile.delete();
+      }
+    }
+
     await _loadPerso();
   }
 
