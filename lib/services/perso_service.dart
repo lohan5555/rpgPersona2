@@ -28,6 +28,7 @@ class PersoService{
           name: map['name'] as String,
           desc: map['desc'] as String?,
           note: map['note'] as String?,
+          imgPath: map['imgPath'] as String?,
           partieId: map['partieId'] as int
         ),
     ];
@@ -48,6 +49,7 @@ class PersoService{
             name: map['name'] as String,
             desc: map['desc'] as String?,
             note: map['note'] as String?,
+            imgPath: map['imgPath'] as String?,
             partieId: map['partieId'] as int
         ),
     ];
@@ -60,6 +62,17 @@ class PersoService{
       'perso',
       where: 'id = ?',
       whereArgs: [id], //to prevent SQL injection.
+    );
+  }
+
+  Future<void> updatePerso(Perso perso) async {
+    final db = await DatabaseService.database;
+
+    await db?.update(
+      'perso',
+      perso.toMap(),
+      where: 'id = ?',
+      whereArgs: [perso.id],
     );
   }
 

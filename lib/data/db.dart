@@ -27,6 +27,7 @@ class DatabaseService {
             name TEXT,
             desc TEXT,
             note TEXT,
+            imgPath TEXT,
             partieId INTEGER
           )
         ''');

@@ -53,6 +53,11 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
     );
   }
 
+  Future<void> updatePerso(Perso perso) async {
+    await persoService.updatePerso(perso);
+    await _loadPerso();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +80,8 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
                 });
               }
             },
-            icon: Icon(Icons.edit))
+            icon: Icon(Icons.edit)
+          )
         ],
       ),
       body: SafeArea(
@@ -144,6 +150,7 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
           return PersoCard(
             perso: perso,
             onDelete: () => deletePerso(perso.id!),
+            onEdit: updatePerso,
           );
         },
       ),

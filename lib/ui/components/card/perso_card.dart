@@ -5,11 +5,13 @@ import 'package:rpg_persona2/ui/screens/perso_detail_screen.dart';
 class PersoCard extends StatelessWidget{
   final Perso perso;
   final VoidCallback onDelete;
+  final Function(Perso) onEdit;
 
   const PersoCard({
     super.key,
     required this.perso,
-    required this.onDelete
+    required this.onDelete,
+    required this.onEdit
   });
 
   @override
@@ -26,7 +28,7 @@ class PersoCard extends StatelessWidget{
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => PersoDetailPage(perso: perso),
+              builder: (_) => PersoDetailPage(perso: perso, onEdit: onEdit,),
             ),
           );
         },
