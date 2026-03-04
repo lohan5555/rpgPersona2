@@ -28,6 +28,7 @@ class PersoService{
           name: map['name'] as String,
           desc: map['desc'] as String?,
           note: map['note'] as String?,
+          listPosition: map['listPosition'] as int,
           imgPath: map['imgPath'] as String?,
           partieId: map['partieId'] as int
         ),
@@ -39,7 +40,8 @@ class PersoService{
 
     final List<Map<String, Object?>> persoMaps = await db!.query('perso',
         where: 'partieId = ?',
-        whereArgs: [partieId]
+        whereArgs: [partieId],
+        orderBy: 'listPosition ASC',
     );
 
     return [
@@ -49,6 +51,7 @@ class PersoService{
             name: map['name'] as String,
             desc: map['desc'] as String?,
             note: map['note'] as String?,
+            listPosition: map['listPosition'] as int,
             imgPath: map['imgPath'] as String?,
             partieId: map['partieId'] as int
         ),

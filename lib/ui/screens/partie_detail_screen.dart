@@ -158,17 +158,31 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
   Widget _persoList() {
     return Expanded(
       child: _perso.isEmpty
-          ? const Center(child: Text('Aucun personnage'))
-          : ListView.builder(
-        padding: const EdgeInsets.all(12),
-        itemCount: _perso.length,
-        itemBuilder: (context, index) {
-          final perso = _perso[index];
-          return PersoCard(
-            perso: perso,
-            onDelete: () => deletePerso(perso.id!),
-            onEdit: updatePerso,
-          );
+        ? const Center(child: Text('Aucun personnage'))
+        : ReorderableListView.builder(
+          itemCount: _perso.length,
+          onReorder: (oldIndex, newIndex) async {
+            setState(() {
+              if (newIndex > oldIndex) newIndex--;
+
+              final item = _perso.removeAt(oldIndex);
+              _perso.insert(newIndex, item);
+            });
+
+            for (int i = 0; i < _perso.length; i++) {
+              _perso[i] = _perso[i].copyWith(listPosition: i);
+              await persoService.updatePerso(_perso[i]);
+            }
+          },
+          itemBuilder: (context, index) {
+            final perso = _perso[index];
+
+            return PersoCard(
+              key: ValueKey(perso.id),
+              perso: perso,
+              onDelete: () => deletePerso(perso.id!),
+              onEdit: updatePerso,
+            );
         },
       ),
     );
@@ -217,6 +231,7 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
                 final perso = Perso(
                   name: controllerNom.text.trim(),
                   desc: controllerDesc.text.trim(),
+                  listPosition: _perso.length,
                   partieId: _partie.id!
                 );
 

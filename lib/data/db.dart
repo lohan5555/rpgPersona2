@@ -28,6 +28,7 @@ class DatabaseService {
             desc TEXT,
             note TEXT,
             imgPath TEXT,
+            listPosition INT,
             partieId INTEGER
           )
         ''');
