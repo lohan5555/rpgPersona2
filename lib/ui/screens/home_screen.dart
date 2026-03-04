@@ -57,6 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: _partie.isEmpty
           ? const Center(child: Text('Aucune partie'))
           : ReorderableListView.builder(
+            padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
             itemCount: _partie.length,
             onReorder: (oldIndex, newIndex) async {
               setState(() {
@@ -138,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       controller: controllerDesc,
                       maxLines: 2,
                       decoration: const InputDecoration(
-                        labelText: 'Description',
+                        labelText: 'Description/Système de jeu',
                         border: OutlineInputBorder(),
                       ),
                     ),
