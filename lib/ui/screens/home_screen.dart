@@ -55,19 +55,33 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: SafeArea(
         child: _partie.isEmpty
-            ? const Center(child: Text('Aucune partie'))
-            : ListView.builder(
-          padding: const EdgeInsets.all(12),
-          itemCount: _partie.length,
-          itemBuilder: (context, index) {
-            final partie = _partie[index];
+          ? const Center(child: Text('Aucune partie'))
+          : ReorderableListView.builder(
+            itemCount: _partie.length,
+            onReorder: (oldIndex, newIndex) async {
+              setState(() {
+                if (newIndex > oldIndex) newIndex--;
 
-            return PartieCard(
-              partie: partie,
-              onDelete: () => deletePartie(_partie[index].id!),
-              onEdit: updatePartie);
-          },
-        ),
+                final item = _partie.removeAt(oldIndex);
+                _partie.insert(newIndex, item);
+              });
+
+              for (int i = 0; i < _partie.length; i++) {
+                _partie[i] = _partie[i].copyWith(listPosition: i);
+                await partieService.updateParie(_partie[i]);
+              }
+            },
+            itemBuilder: (context, index) {
+              final partie = _partie[index];
+
+              return PartieCard(
+                key: ValueKey(partie.id), // IMPORTANT
+                partie: partie,
+                onDelete: () => deletePartie(partie.id!),
+                onEdit: updatePartie,
+              );
+            },
+          ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showCreatePartieDialog,
@@ -144,6 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       name: controllerNom.text.trim(),
                       desc: controllerDesc.text.trim(),
                       emoji: tempEmoji,
+                      listPosition: _partie.length
                     );
 
                     await partieService.insertPartie(partie);

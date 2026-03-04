@@ -20,7 +20,9 @@ class PartieService{
   Future<List<Partie>> getAllpartie() async {
     final db = await DatabaseService.database;
 
-    final List<Map<String, Object?>> partieMaps = await db!.query('partie');
+    final List<Map<String, Object?>> partieMaps = await db!.query(
+      'partie',
+      orderBy: 'listPosition ASC');
 
     return [
       for (final map in partieMaps)
@@ -30,7 +32,8 @@ class PartieService{
           desc: map['desc'] as String?,
           note: map['note'] as String?,
           imgPath: map['imgPath'] as String?,
-          emoji: map['emoji'] as String
+          emoji: map['emoji'] as String,
+          listPosition: map['listPosition'] as int
         ),
     ];
   }

@@ -18,7 +18,8 @@ class DatabaseService {
             desc TEXT,
             note TEXT,
             imgPath TEXT,
-            emoji TEXT
+            emoji TEXT,
+            listPosition INT
           )
         ''');
         await db.execute('''
