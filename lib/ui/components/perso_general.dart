@@ -65,7 +65,7 @@ class _PersoGeneralState extends State<PersoGeneral> {
         controller: controllerNote,
         maxLines: 6,
         decoration: const InputDecoration(
-          labelText: 'Notes de la partie',
+          labelText: 'Information sur le personnage',
           alignLabelWithHint: true,
           border: OutlineInputBorder(),
         ),
