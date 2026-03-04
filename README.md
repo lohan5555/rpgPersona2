@@ -1,16 +1,59 @@
-# rpg_persona2
+# RPG Persona 2
 
-A new Flutter project.
+RPGpersona est une application mobile Flutter conçu pour Android permettant de gérer ses differentes partie de jeux de rôles.
 
-## Getting Started
+L'objectif en développant cette application était de redévelopper et d'amélioré une ancienne application similaire faites en Kotlin natif dans le cadre d'un projet de cours.
 
-This project is a starting point for a Flutter application.
+## Installation :
 
-A few resources to get you started if this is your first Flutter project:
+- Clonez le dépôt :
+```
+git clone https://github.com/lohan5555/rpgPersona2
+```
+- Ouvrez le projet dans Android Studio (assurez vous d'avoir le pluging flutter d'installer)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Compilez et lancez sur un émulateur ou un appareil Android
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+## Fonctionnalités :
+
+Créer, afficher, modifier et supprimer des partie de jeu de rôle
+
+Créer, afficher, modifier et supprimer des personnages associé à une partie
+
+Créer, afficher, modifier et supprimer des statistique associé à un personnage
+
+## Images :
+
+Page d'acceuil (vide et avec plusieurs partie créées):
+
+Formulaire de création d'une partie:
+
+Page d'une partie:
+
+Formulaire de modification d'une partie:
+
+Formulaire de création d'une perso:
+
+Pages d'un perso:
+
+Formulaire de modification d'un perso:
+
+Formulaire de création d'une statistique:
+
+
+
+
+
+## Technologie utilisées :
+
+- Sqflite pour la persistance des données (https://pub.dev/packages/sqflite)
+- Image_picker pour prendre/récupérer les photos (https://pub.dev/packages/image_picker)
+- Emoji_picker_flutter pour la selection des emojis
+
+
+
+## Potentiels améliorations :
+
+
+
