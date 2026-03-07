@@ -10,6 +10,9 @@ class DatabaseService {
     _database = await sql.openDatabase(
       join(await sql.getDatabasesPath(), 'plantoune.db'),
       version: 1,
+      onConfigure: (db) async {
+        await db.execute('PRAGMA foreign_keys = ON'); // active le support des clés étrangères
+      },
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE partie(
@@ -30,7 +33,8 @@ class DatabaseService {
             note TEXT,
             imgPath TEXT,
             listPosition INT,
-            partieId INTEGER
+            partieId INTEGER,
+            FOREIGN KEY (partieId) REFERENCES partie (id) ON DELETE CASCADE
           )
         ''');
         await db.execute('''
@@ -38,7 +42,8 @@ class DatabaseService {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
             valeur FLOAT,
-            persoId INTEGER
+            persoId INTEGER,
+            FOREIGN KEY (persoId) REFERENCES perso (id) ON DELETE CASCADE
           )
         ''');
       },
