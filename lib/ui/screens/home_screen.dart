@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:rpg_persona2/services/emoji_service.dart';
 import 'package:rpg_persona2/ui/components/card/partie_card.dart';
@@ -42,7 +44,23 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> updatePartie(Partie partie) async {
+    //on supprime l'ancienne image si on a choisi une nouvelle
+    final oldPartie = _partie.firstWhere(
+          (p) => p.id == partie.id,
+    );
+    final oldPath = oldPartie.imgPath;
+
     await partieService.updateParie(partie);
+
+    if (oldPath != null &&
+        oldPath != partie.imgPath &&
+        oldPath.contains("rpg_persona2") &&
+        partie.imgPath != null) {
+      final oldFile = File(oldPath);
+      if (await oldFile.exists()) {
+        await oldFile.delete();
+      }
+    }
     await _loadPartie();
   }
 
