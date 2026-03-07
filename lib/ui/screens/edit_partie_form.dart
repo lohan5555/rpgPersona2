@@ -72,84 +72,13 @@ class _EditPartieFormState extends State<EditPartieForm> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(height: 24),
-                          Form(
-                            key: _formKey,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Nom :"),
-                                TextFormField(
-                                  controller: _nameController,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Veuillez entrer un nom';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                SizedBox(height: 20),
-
-                                Text("Description :"),
-                                TextFormField(
-                                  controller: _descController,
-                                  validator: (value) {return null;},
-                                ),
-                                SizedBox(height: 20),
-                              ],
-                            ),
-                          ),
+                          _form(),
                           SizedBox(height: 24),
-
-                          SizedBox(
-                            height: 200.0,
-                            width: 300.0,
-                            child: GestureDetector(
-                              onTap: () {
-                                _showPicker(context: context);
-                              },
-                              child: _galleryFile == null
-                                ? const Center(child: Text("Cliquez pour ajouter une image."))
-                                : Center(child: Image.file(_galleryFile!)),
-                              )
-                          ),
+                          _displayImg(),
                           SizedBox(height: 24),
-                          GestureDetector(
-                            onTap: () {
-                              // Ferme le clavier texte avant d'ouvrir les emojis
-                              FocusScope.of(context).unfocus();
-
-                              emojiService.showEmojiPicker(context, (emoji) {
-                                setStateDialog(() {
-                                  _tempEmoji = emoji;
-                                });
-                              });
-                            },
-                            child: CircleAvatar(
-                              radius: 35,
-                              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-                              child: Text(_tempEmoji, style: const TextStyle(fontSize: 35)),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                if (!_formKey.currentState!.validate()) return;
-
-                                final partieEdit = widget.partie.copyWith(
-                                  name: _nameController.text,
-                                  desc: _descController.text.trim().isEmpty
-                                      ? null
-                                      : _descController.text.trim(),
-                                  imgPath: _galleryFile?.path,
-                                  emoji: _tempEmoji
-                                );
-
-                                Navigator.pop(context, partieEdit);
-                              },
-                              child: const Text('Enregistrer les modifications'),
-                            ),
-                          ),
+                          _displayEmoji(setStateDialog),
+                          SizedBox(height: 24),
+                          _saveButton(),
                         ],
                       ),
                     ),
@@ -159,6 +88,93 @@ class _EditPartieFormState extends State<EditPartieForm> {
             }
           ),
         )
+      ),
+    );
+  }
+
+  Widget _form(){
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Nom :"),
+          TextFormField(
+            controller: _nameController,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Veuillez entrer un nom';
+              }
+              return null;
+            },
+          ),
+          SizedBox(height: 20),
+
+          Text("Description :"),
+          TextFormField(
+            controller: _descController,
+            validator: (value) {return null;},
+          ),
+          SizedBox(height: 20),
+        ],
+      ),
+    );
+  }
+
+  Widget _displayImg(){
+    return SizedBox(
+        height: 200.0,
+        width: 300.0,
+        child: GestureDetector(
+          onTap: () {
+            _showPicker(context: context);
+          },
+          child: _galleryFile == null
+              ? const Center(child: Text("Cliquez pour ajouter une image."))
+              : Center(child: Image.file(_galleryFile!)),
+        )
+    );
+  }
+
+  Widget _displayEmoji(StateSetter setStateDialog){
+    return GestureDetector(
+      onTap: () {
+        // Ferme le clavier texte avant d'ouvrir les emojis
+        FocusScope.of(context).unfocus();
+
+        emojiService.showEmojiPicker(context, (emoji) {
+          setStateDialog(() {
+            _tempEmoji = emoji;
+          });
+        });
+      },
+      child: CircleAvatar(
+        radius: 35,
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        child: Text(_tempEmoji, style: const TextStyle(fontSize: 35)),
+      ),
+    );
+  }
+
+  Widget _saveButton(){
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: ElevatedButton(
+        onPressed: () async {
+          if (!_formKey.currentState!.validate()) return;
+
+          final partieEdit = widget.partie.copyWith(
+              name: _nameController.text,
+              desc: _descController.text.trim().isEmpty
+                  ? null
+                  : _descController.text.trim(),
+              imgPath: _galleryFile?.path,
+              emoji: _tempEmoji
+          );
+
+          Navigator.pop(context, partieEdit);
+        },
+        child: const Text('Enregistrer les modifications'),
       ),
     );
   }
