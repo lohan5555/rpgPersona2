@@ -172,6 +172,7 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
       child: _perso.isEmpty
         ? const Center(child: Text('Aucun personnage'))
         : ReorderableListView.builder(
+          padding: const EdgeInsets.only(left: 10, right: 10),
           itemCount: _perso.length,
           onReorder: (oldIndex, newIndex) async {
             setState(() {
