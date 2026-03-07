@@ -18,11 +18,19 @@ class PersoGeneral extends StatefulWidget{
 class _PersoGeneralState extends State<PersoGeneral> {
 
   final TextEditingController controllerNote = TextEditingController();
+  final FocusNode _focusNodeNote = FocusNode();
 
   @override
   void initState(){
     super.initState();
     controllerNote.text = widget.perso.note ?? '';
+  }
+
+  @override
+  void dispose() {
+    controllerNote.dispose();
+    _focusNodeNote.dispose();
+    super.dispose();
   }
 
   @override
@@ -62,6 +70,10 @@ class _PersoGeneralState extends State<PersoGeneral> {
     return Padding(
       padding: const EdgeInsets.all(12),
       child: TextField(
+        focusNode: _focusNodeNote,
+        onTapOutside: ((event) {
+          _focusNodeNote.unfocus();
+        }),
         controller: controllerNote,
         maxLines: 6,
         decoration: const InputDecoration(

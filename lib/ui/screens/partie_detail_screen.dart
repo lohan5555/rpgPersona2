@@ -29,6 +29,7 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
   List<Perso> _perso = [];
 
   final TextEditingController controllerNote = TextEditingController();
+  final FocusNode _focusNodeNote = FocusNode();
 
   @override
   void initState(){
@@ -36,6 +37,13 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
     _partie = widget.partie;
     controllerNote.text = _partie.note ?? '';
     _loadPerso();
+  }
+
+  @override
+  void dispose() {
+    controllerNote.dispose();
+    _focusNodeNote.dispose();
+    super.dispose();
   }
 
   Future<void> _loadPerso() async{
@@ -140,6 +148,10 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
     return Padding(
       padding: const EdgeInsets.all(12),
       child: TextField(
+        focusNode: _focusNodeNote,
+        onTapOutside: ((event) {
+          _focusNodeNote.unfocus();
+        }),
         controller: controllerNote,
         maxLines: 6,
         decoration: const InputDecoration(
