@@ -183,6 +183,18 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
       child: _perso.isEmpty
         ? const Center(child: Text('Aucun personnage'))
         : ReorderableListView.builder(
+          proxyDecorator: (Widget child, int index, Animation<double> animation) {
+            return AnimatedBuilder(
+              animation: animation,
+              builder: (BuildContext context, Widget? child) {
+                return Material(
+                  color: Colors.transparent,
+                  child: child,
+                );
+              },
+              child: child,
+            );
+          },
           padding: const EdgeInsets.only(left: 10, right: 10),
           itemCount: _perso.length,
           onReorder: (oldIndex, newIndex) async {

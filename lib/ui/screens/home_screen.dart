@@ -101,6 +101,18 @@ class _MyHomePageState extends State<MyHomePage> {
         child: _partie.isEmpty
           ? const Center(child: Text('Créez votre première partie !'))
           : ReorderableListView.builder(
+            proxyDecorator: (Widget child, int index, Animation<double> animation) {
+              return AnimatedBuilder(
+                animation: animation,
+                builder: (BuildContext context, Widget? child) {
+                  return Material(
+                    color: Colors.transparent,
+                    child: child,
+                  );
+                },
+                child: child,
+              );
+            },
             padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
             itemCount: _partie.length,
             onReorder: (oldIndex, newIndex) async {
