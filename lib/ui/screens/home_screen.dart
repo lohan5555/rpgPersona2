@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:rpg_persona2/services/emoji_service.dart';
+import 'package:rpg_persona2/services/perso_service.dart';
 import 'package:rpg_persona2/ui/components/card/partie_card.dart';
 
 import '../../data/models/partie.dart';
+import '../../data/models/perso.dart';
 import '../../services/partie_service.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -19,6 +21,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final PartieService partieService = PartieService();
   final EmojiService emojiService = EmojiService();
+  final PersoService persoService = PersoService();
 
   List<Partie> _partie = [];
 
@@ -36,6 +39,29 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> deletePartie(int id) async {
+    final partie = _partie.firstWhere((p) => p.id == id);
+
+    //supprime l'image de la partie
+    final imgPath = partie.imgPath;
+    if (imgPath != null && imgPath.contains("rpg_persona2")) {
+      final file = File(imgPath);
+      if (await file.exists()) {
+        await file.delete();
+      }
+    }
+
+    //supprime les images des perso supprimer en cascade
+    final List<Perso> perso = await persoService.getAllpersoByPartie(id);
+    for (var p in perso){
+      final imgPath = p.imgPath;
+      if (imgPath != null && imgPath.contains("rpg_persona2")) {
+        final file = File(imgPath);
+        if (await file.exists()) {
+          await file.delete();
+        }
+      }
+    }
+
     await partieService.deletePartie(id);
     await _loadPartie();
     ScaffoldMessenger.of(context).showSnackBar(

@@ -54,6 +54,17 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
   }
 
   Future<void> deletePerso(int id) async {
+    final perso = _perso.firstWhere((p) => p.id == id);
+
+    //supprime l'image du perso
+    final imgPath = perso.imgPath;
+    if (imgPath != null && imgPath.contains("rpg_persona2")) {
+      final file = File(imgPath);
+      if (await file.exists()) {
+        await file.delete();
+      }
+    }
+
     await persoService.deletePerso(id);
     await _loadPerso();
     ScaffoldMessenger.of(context).showSnackBar(
