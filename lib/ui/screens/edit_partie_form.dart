@@ -18,20 +18,20 @@ class EditPartieForm extends StatefulWidget {
 }
 
 class _EditPartieFormState extends State<EditPartieForm> {
-  File? galleryFile;
+  File? _galleryFile;
   final ImageService imageService = ImageService();
   final EmojiService emojiService = EmojiService();
 
 
   final _formKey = GlobalKey<FormState>();
-  final nameController = TextEditingController();
-  final descController = TextEditingController();
-  late String tempEmoji;
+  final _nameController = TextEditingController();
+  final _descController = TextEditingController();
+  late String _tempEmoji;
 
   @override
   void dispose() {
-    nameController.dispose();
-    descController.dispose();
+    _nameController.dispose();
+    _descController.dispose();
     super.dispose();
   }
 
@@ -39,12 +39,12 @@ class _EditPartieFormState extends State<EditPartieForm> {
   void initState() {
     super.initState();
 
-    nameController.text = widget.partie.name;
-    descController.text = widget.partie.desc ?? '';
-    tempEmoji = widget.partie.emoji;
+    _nameController.text = widget.partie.name;
+    _descController.text = widget.partie.desc ?? '';
+    _tempEmoji = widget.partie.emoji;
 
     if (widget.partie.imgPath != null) {
-      galleryFile = File(widget.partie.imgPath!);
+      _galleryFile = File(widget.partie.imgPath!);
     }
   }
 
@@ -79,7 +79,7 @@ class _EditPartieFormState extends State<EditPartieForm> {
                               children: [
                                 Text("Nom :"),
                                 TextFormField(
-                                  controller: nameController,
+                                  controller: _nameController,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return 'Veuillez entrer un nom';
@@ -91,7 +91,7 @@ class _EditPartieFormState extends State<EditPartieForm> {
 
                                 Text("Description :"),
                                 TextFormField(
-                                  controller: descController,
+                                  controller: _descController,
                                   validator: (value) {return null;},
                                 ),
                                 SizedBox(height: 20),
@@ -107,9 +107,9 @@ class _EditPartieFormState extends State<EditPartieForm> {
                               onTap: () {
                                 _showPicker(context: context);
                               },
-                              child: galleryFile == null
+                              child: _galleryFile == null
                                 ? const Center(child: Text("Cliquez pour ajouter une image."))
-                                : Center(child: Image.file(galleryFile!)),
+                                : Center(child: Image.file(_galleryFile!)),
                               )
                           ),
                           SizedBox(height: 24),
@@ -120,14 +120,14 @@ class _EditPartieFormState extends State<EditPartieForm> {
 
                               emojiService.showEmojiPicker(context, (emoji) {
                                 setStateDialog(() {
-                                  tempEmoji = emoji;
+                                  _tempEmoji = emoji;
                                 });
                               });
                             },
                             child: CircleAvatar(
                               radius: 35,
                               backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-                              child: Text(tempEmoji, style: const TextStyle(fontSize: 35)),
+                              child: Text(_tempEmoji, style: const TextStyle(fontSize: 35)),
                             ),
                           ),
                           Padding(
@@ -137,12 +137,12 @@ class _EditPartieFormState extends State<EditPartieForm> {
                                 if (!_formKey.currentState!.validate()) return;
 
                                 final partieEdit = widget.partie.copyWith(
-                                  name: nameController.text,
-                                  desc: descController.text.trim().isEmpty
+                                  name: _nameController.text,
+                                  desc: _descController.text.trim().isEmpty
                                       ? null
-                                      : descController.text.trim(),
-                                  imgPath: galleryFile?.path,
-                                  emoji: tempEmoji
+                                      : _descController.text.trim(),
+                                  imgPath: _galleryFile?.path,
+                                  emoji: _tempEmoji
                                 );
 
                                 Navigator.pop(context, partieEdit);
@@ -179,7 +179,7 @@ class _EditPartieFormState extends State<EditPartieForm> {
                   Navigator.pop(context);
                   final image = await imageService.pickAndSaveImage(ImageSource.gallery);
                   if (image != null) {
-                    setState(() => galleryFile = image);
+                    setState(() => _galleryFile = image);
                   }
                 },
               ),
@@ -190,7 +190,7 @@ class _EditPartieFormState extends State<EditPartieForm> {
                   Navigator.pop(context);
                   final image = await imageService.pickAndSaveImage(ImageSource.camera);
                   if (image != null) {
-                    setState(() => galleryFile = image);
+                    setState(() => _galleryFile = image);
                   }
                 },
               ),

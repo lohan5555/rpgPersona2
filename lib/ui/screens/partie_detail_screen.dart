@@ -28,20 +28,20 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
 
   List<Perso> _perso = [];
 
-  final TextEditingController controllerNote = TextEditingController();
+  final TextEditingController _controllerNote = TextEditingController();
   final FocusNode _focusNodeNote = FocusNode();
 
   @override
   void initState(){
     super.initState();
     _partie = widget.partie;
-    controllerNote.text = _partie.note ?? '';
+    _controllerNote.text = _partie.note ?? '';
     _loadPerso();
   }
 
   @override
   void dispose() {
-    controllerNote.dispose();
+    _controllerNote.dispose();
     _focusNodeNote.dispose();
     super.dispose();
   }
@@ -152,7 +152,7 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
         onTapOutside: ((event) {
           _focusNodeNote.unfocus();
         }),
-        controller: controllerNote,
+        controller: _controllerNote,
         maxLines: 6,
         decoration: const InputDecoration(
           labelText: 'Notes de la partie',
@@ -160,7 +160,7 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
           border: OutlineInputBorder(),
         ),
         onChanged: (value) {
-          Partie p = _partie.copyWith(note: controllerNote.text);
+          Partie p = _partie.copyWith(note: _controllerNote.text);
           widget.onEdit(p);
         },
       ),

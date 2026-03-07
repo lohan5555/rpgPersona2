@@ -17,17 +17,17 @@ class EditPersoForm extends StatefulWidget {
 }
 
 class _EditPersoFormState extends State<EditPersoForm> {
-  File? galleryFile;
+  File? _galleryFile;
   final ImageService imageService = ImageService();
 
   final _formKey = GlobalKey<FormState>();
-  final nameController = TextEditingController();
-  final descController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _descController = TextEditingController();
 
   @override
   void dispose() {
-    nameController.dispose();
-    descController.dispose();
+    _nameController.dispose();
+    _descController.dispose();
     super.dispose();
   }
 
@@ -35,11 +35,11 @@ class _EditPersoFormState extends State<EditPersoForm> {
   void initState() {
     super.initState();
 
-    nameController.text = widget.perso.name;
-    descController.text = widget.perso.desc ?? '';
+    _nameController.text = widget.perso.name;
+    _descController.text = widget.perso.desc ?? '';
 
     if (widget.perso.imgPath != null) {
-      galleryFile = File(widget.perso.imgPath!);
+      _galleryFile = File(widget.perso.imgPath!);
     }
   }
 
@@ -74,7 +74,7 @@ class _EditPersoFormState extends State<EditPersoForm> {
                                   children: [
                                     Text("Nom :"),
                                     TextFormField(
-                                      controller: nameController,
+                                      controller: _nameController,
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return 'Veuillez entrer un nom';
@@ -86,7 +86,7 @@ class _EditPersoFormState extends State<EditPersoForm> {
 
                                     Text("Description :"),
                                     TextFormField(
-                                      controller: descController,
+                                      controller: _descController,
                                       validator: (value) {return null;},
                                     ),
                                     SizedBox(height: 20),
@@ -102,9 +102,9 @@ class _EditPersoFormState extends State<EditPersoForm> {
                                     onTap: () {
                                       _showPicker(context: context);
                                     },
-                                    child: galleryFile == null
+                                    child: _galleryFile == null
                                         ? const Center(child: Text("Cliquez pour ajouter une image."))
-                                        : Center(child: Image.file(galleryFile!)),
+                                        : Center(child: Image.file(_galleryFile!)),
                                   )
                               ),
                               SizedBox(height: 24),
@@ -116,11 +116,11 @@ class _EditPersoFormState extends State<EditPersoForm> {
                                     if (!_formKey.currentState!.validate()) return;
 
                                     final persoEdit = widget.perso.copyWith(
-                                        name: nameController.text,
-                                        desc: descController.text.trim().isEmpty
+                                        name: _nameController.text,
+                                        desc: _descController.text.trim().isEmpty
                                             ? null
-                                            : descController.text.trim(),
-                                        imgPath: galleryFile?.path,
+                                            : _descController.text.trim(),
+                                        imgPath: _galleryFile?.path,
                                     );
 
                                     Navigator.pop(context, persoEdit);
@@ -157,7 +157,7 @@ class _EditPersoFormState extends State<EditPersoForm> {
                   Navigator.pop(context);
                   final image = await imageService.pickAndSaveImage(ImageSource.gallery);
                   if (image != null) {
-                    setState(() => galleryFile = image);
+                    setState(() => _galleryFile = image);
                   }
                 },
               ),
@@ -168,7 +168,7 @@ class _EditPersoFormState extends State<EditPersoForm> {
                   Navigator.pop(context);
                   final image = await imageService.pickAndSaveImage(ImageSource.camera);
                   if (image != null) {
-                    setState(() => galleryFile = image);
+                    setState(() => _galleryFile = image);
                   }
                 },
               ),

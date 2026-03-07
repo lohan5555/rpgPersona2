@@ -21,7 +21,7 @@ class PersoDetailPage extends StatefulWidget {
 
 class _PersoDetailPageState extends State<PersoDetailPage> {
   final StatService statservice = StatService();
-  int currentPageIndex = 1;
+  int _currentPageIndex = 1;
   late Perso _perso;
 
   List<Stat> _stat = [];
@@ -79,7 +79,7 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
         ],
       ),
       body: IndexedStack(
-        index: currentPageIndex,
+        index: _currentPageIndex,
         children: [
           PersoStatistique(stat: _stat, onDelete: deleteStat, onEdit: updateStat),
           PersoGeneral(perso: _perso, onEdit: widget.onEdit),
@@ -89,10 +89,10 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
       bottomNavigationBar: NavigationBar(
           onDestinationSelected: (int index) {
             setState(() {
-              currentPageIndex = index;
+              _currentPageIndex = index;
             });
           },
-          selectedIndex: currentPageIndex,
+          selectedIndex: _currentPageIndex,
           destinations: [
             NavigationDestination(
                 icon: Icon(Icons.query_stats_outlined),
@@ -108,7 +108,7 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
                 label: 'Inventaire')
           ]
       ),
-      floatingActionButton: currentPageIndex==0
+      floatingActionButton: _currentPageIndex==0
         ? FloatingActionButton(
           onPressed: _showCreateStatDialog,
           child: const Icon(Icons.add),
