@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: SafeArea(
         child: _partie.isEmpty
-          ? const Center(child: Text('Aucune partie'))
+          ? const Center(child: Text('Créez votre première partie !'))
           : ReorderableListView.builder(
             padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
             itemCount: _partie.length,
