@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:rpg_persona2/data/models/item.dart';
 import 'package:rpg_persona2/data/models/perso.dart';
+import 'package:rpg_persona2/services/item_service.dart';
 import 'package:rpg_persona2/ui/components/perso_general.dart';
 import 'package:rpg_persona2/ui/components/perso_inventaire.dart';
 import 'package:rpg_persona2/ui/components/perso_statistique.dart';
@@ -21,22 +23,33 @@ class PersoDetailPage extends StatefulWidget {
 
 class _PersoDetailPageState extends State<PersoDetailPage> {
   final StatService statservice = StatService();
+  final ItemService itemService = ItemService();
+
   int _currentPageIndex = 1;
   late Perso _perso;
 
   List<Stat> _stat = [];
+  List<Item> _item = [];
 
   @override
   void initState(){
     super.initState();
     _perso = widget.perso;
     _loadStat();
+    _loadItem();
   }
 
   Future<void> _loadStat() async{
     final stat = await statservice.getAllStatByPerso(_perso.id!);
     setState(() {
       _stat = stat;
+    });
+  }
+
+  Future<void> _loadItem() async{
+    final item = await itemService.getAllItemByPerso(_perso.id!);
+    setState(() {
+      _item = item;
     });
   }
 
@@ -83,7 +96,7 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
         children: [
           PersoStatistique(stat: _stat, onDelete: deleteStat, onEdit: updateStat),
           PersoGeneral(perso: _perso, onEdit: widget.onEdit),
-          PersoInventaire()
+          PersoInventaire(item: _item,)
         ],
       ),
       bottomNavigationBar: NavigationBar(
@@ -108,13 +121,23 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
                 label: 'Inventaire')
           ]
       ),
-      floatingActionButton: _currentPageIndex==0
-        ? FloatingActionButton(
-          onPressed: _showCreateStatDialog,
-          child: const Icon(Icons.add),
-        )
-        : Container(),
+      floatingActionButton: _buildFloatingActionButton()
     );
+  }
+
+  Widget? _buildFloatingActionButton() {
+    if (_currentPageIndex == 0) {
+      return FloatingActionButton(
+        onPressed: _showCreateStatDialog,
+        child: const Icon(Icons.add),
+      );
+    } else if (_currentPageIndex == 2) {
+      return FloatingActionButton(
+        onPressed: _showCreateItemDialog,
+        child: const Icon(Icons.add),
+      );
+    }
+    return null;
   }
 
   Future<void> _showCreateStatDialog() async {
@@ -172,6 +195,69 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
 
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Stat créée')),
+                );
+              },
+              child: const Text('Créer'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _showCreateItemDialog() async {
+    final TextEditingController controllerNom = TextEditingController();
+    final TextEditingController controllerDesc = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Nouvel objet'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                TextField(
+                  controller: controllerNom,
+                  decoration: const InputDecoration(
+                    labelText: "Nom de l'objet",
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: controllerDesc,
+                  decoration: const InputDecoration(
+                    labelText: "Description de l'objet",
+                    border: OutlineInputBorder(),
+                  ),
+                )
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Annuler'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (controllerNom.text.trim().isEmpty) return;
+
+                final item = Item(
+                  name: controllerNom.text.trim(),
+                  desc: controllerDesc.text.trim(),
+                  quantity: 1,
+                  persoId: _perso.id!
+                );
+
+                await itemService.insertItem(item);
+                await _loadItem();
+
+                Navigator.pop(context);
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Objet créée')),
                 );
               },
               child: const Text('Créer'),

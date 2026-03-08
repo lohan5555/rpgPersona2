@@ -46,6 +46,16 @@ class DatabaseService {
             FOREIGN KEY (persoId) REFERENCES perso (id) ON DELETE CASCADE
           )
         ''');
+        await db.execute('''
+          CREATE TABLE item(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            quantity INT NOT NULL,
+            desc TEXT,
+            persoId INTEGER NOT NULL,
+            FOREIGN KEY (persoId) REFERENCES perso (id) ON DELETE CASCADE
+          )
+        ''');
       },
     );
     return _database;
