@@ -17,32 +17,32 @@ class DatabaseService {
         await db.execute('''
           CREATE TABLE partie(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT,
+            name TEXT NOT NULL,
             desc TEXT,
             note TEXT,
             imgPath TEXT,
-            emoji TEXT,
-            listPosition INT
+            emoji TEXT NOT NULL,
+            listPosition INT NOT NULL
           )
         ''');
         await db.execute('''
           CREATE TABLE perso(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT,
+            name TEXT NOT NULL,
             desc TEXT,
             note TEXT,
             imgPath TEXT,
-            listPosition INT,
-            partieId INTEGER,
+            listPosition INT NOT NULL,
+            partieId INTEGER NOT NULL,
             FOREIGN KEY (partieId) REFERENCES partie (id) ON DELETE CASCADE
           )
         ''');
         await db.execute('''
           CREATE TABLE stat(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT,
-            valeur FLOAT,
-            persoId INTEGER,
+            name TEXT NOT NULL,
+            valeur FLOAT NOT NULL,
+            persoId INTEGER NOT NULL,
             FOREIGN KEY (persoId) REFERENCES perso (id) ON DELETE CASCADE
           )
         ''');
