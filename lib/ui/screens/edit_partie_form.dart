@@ -166,7 +166,7 @@ class _EditPartieFormState extends State<EditPartieForm> {
           final partieEdit = widget.partie.copyWith(
               name: _nameController.text,
               desc: _descController.text.trim().isEmpty
-                  ? null
+                  ? ""
                   : _descController.text.trim(),
               imgPath: _galleryFile?.path,
               emoji: _tempEmoji
