@@ -103,18 +103,20 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
         actions: [
           IconButton(
             onPressed: () async {
-              final partieEdit = await Navigator.push<Partie>(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => EditPartieForm(partie: _partie),
+                  builder: (_) => EditPartieForm(
+                    partie: _partie,
+                    onChanged: (updatePartie){
+                      widget.onEdit(updatePartie);
+                      setState(() {
+                        _partie = updatePartie;
+                      });
+                    }
+                  ),
                 ),
               );
-              if (partieEdit != null) {
-                widget.onEdit(partieEdit);
-                setState(() {
-                  _partie = partieEdit;
-                });
-              }
             },
             icon: Icon(Icons.edit)
           )

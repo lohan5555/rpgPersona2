@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -10,8 +11,13 @@ import '../../services/image_service.dart';
 
 class EditPartieForm extends StatefulWidget {
   final Partie partie;
+  final Function(Partie) onChanged;
 
-  const EditPartieForm({super.key, required this.partie});
+  const EditPartieForm({
+    super.key,
+    required this.partie,
+    required this.onChanged
+  });
 
   @override
   State<EditPartieForm> createState() => _EditPartieFormState();
@@ -27,6 +33,8 @@ class _EditPartieFormState extends State<EditPartieForm> {
   final _nameController = TextEditingController();
   final _descController = TextEditingController();
   late String _tempEmoji;
+
+  Timer? _debounce;
 
   @override
   void dispose() {
@@ -77,8 +85,6 @@ class _EditPartieFormState extends State<EditPartieForm> {
                           _displayImg(),
                           SizedBox(height: 24),
                           _displayEmoji(setStateDialog),
-                          SizedBox(height: 24),
-                          _saveButton(),
                         ],
                       ),
                     ),
@@ -101,6 +107,7 @@ class _EditPartieFormState extends State<EditPartieForm> {
           Text("Nom :"),
           TextFormField(
             controller: _nameController,
+            onChanged: (_) => _autoSave(),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Veuillez entrer un nom';
@@ -113,6 +120,7 @@ class _EditPartieFormState extends State<EditPartieForm> {
           Text("Description :"),
           TextFormField(
             controller: _descController,
+            onChanged: (_) => _autoSave(),
             validator: (value) {return null;},
           ),
           SizedBox(height: 20),
@@ -146,35 +154,13 @@ class _EditPartieFormState extends State<EditPartieForm> {
           setStateDialog(() {
             _tempEmoji = emoji;
           });
+          _autoSave();
         });
       },
       child: CircleAvatar(
         radius: 35,
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         child: Text(_tempEmoji, style: const TextStyle(fontSize: 35)),
-      ),
-    );
-  }
-
-  Widget _saveButton(){
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      child: ElevatedButton(
-        onPressed: () async {
-          if (!_formKey.currentState!.validate()) return;
-
-          final partieEdit = widget.partie.copyWith(
-              name: _nameController.text,
-              desc: _descController.text.trim().isEmpty
-                  ? ""
-                  : _descController.text.trim(),
-              imgPath: _galleryFile?.path,
-              emoji: _tempEmoji
-          );
-
-          Navigator.pop(context, partieEdit);
-        },
-        child: const Text('Enregistrer les modifications'),
       ),
     );
   }
@@ -190,23 +176,25 @@ class _EditPartieFormState extends State<EditPartieForm> {
             children: <Widget>[
               ListTile(
                 leading: const Icon(Icons.photo_library),
-                title: const Text('Photo Library'),
+                title: const Text('Galerie'),
                 onTap: () async {
                   Navigator.pop(context);
                   final image = await imageService.pickAndSaveImage(ImageSource.gallery);
                   if (image != null) {
                     setState(() => _galleryFile = image);
+                    _autoSave();
                   }
                 },
               ),
               ListTile(
                 leading: const Icon(Icons.photo_camera),
-                title: const Text('Camera'),
+                title: const Text('Appareil photo'),
                 onTap: () async {
                   Navigator.pop(context);
                   final image = await imageService.pickAndSaveImage(ImageSource.camera);
                   if (image != null) {
                     setState(() => _galleryFile = image);
+                    _autoSave();
                   }
                 },
               ),
@@ -215,5 +203,22 @@ class _EditPartieFormState extends State<EditPartieForm> {
         );
       },
     );
+  }
+
+  // Sauvegarde après que l'utilisateur ait modifier un champ, avec un debonce de 500ms pour évité le spam
+  void _autoSave() {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    if (!_formKey.currentState!.validate()) return;
+
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      final updatedPartie = widget.partie.copyWith(
+        name: _nameController.text,
+        desc: _descController.text.trim(),
+        imgPath: _galleryFile?.path,
+        emoji: _tempEmoji,
+      );
+      widget.onChanged(updatedPartie);
+
+    });
   }
 }
