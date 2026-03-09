@@ -74,20 +74,23 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
         title: Text(_perso.name),
         actions: [
           IconButton(
-              onPressed: () async{
-                final persoEdit = await Navigator.push<Perso>(
-                  context,
-                    MaterialPageRoute(
-                      builder: (_) => EditPersoForm(perso: _perso),
-                    )
-                );
-                if (persoEdit != null) {
-                  widget.onEdit(persoEdit);
-                  setState(() {
-                    _perso = persoEdit;
-                  });
-                }
-              }, icon: Icon(Icons.edit)
+            onPressed: () async{
+              Navigator.push(
+                context,
+                  MaterialPageRoute(
+                    builder: (_) => EditPersoForm(
+                      perso: _perso,
+                      onChanged: (updatePerso){
+                        widget.onEdit(updatePerso);
+                        setState(() {
+                          _perso = updatePerso;
+                        });
+                      }),
+                  )
+              );
+
+            },
+            icon: Icon(Icons.edit)
           ),
         ],
       ),

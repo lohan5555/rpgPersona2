@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -9,8 +10,13 @@ import '../../services/image_service.dart';
 
 class EditPersoForm extends StatefulWidget {
   final Perso perso;
+  final Function(Perso) onChanged;
 
-  const EditPersoForm({super.key, required this.perso});
+  const EditPersoForm({
+    super.key,
+    required this.perso,
+    required this.onChanged
+  });
 
   @override
   State<EditPersoForm> createState() => _EditPersoFormState();
@@ -23,6 +29,8 @@ class _EditPersoFormState extends State<EditPersoForm> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _descController = TextEditingController();
+
+  Timer? _debounce;
 
   @override
   void dispose() {
@@ -70,8 +78,6 @@ class _EditPersoFormState extends State<EditPersoForm> {
                               _form(),
                               SizedBox(height: 24),
                               _displayImg(),
-                              SizedBox(height: 24),
-                              _saveButton()
                             ],
                           ),
                         ),
@@ -94,6 +100,7 @@ class _EditPersoFormState extends State<EditPersoForm> {
           Text("Nom :"),
           TextFormField(
             controller: _nameController,
+            onChanged: (_) => _autoSave(),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Veuillez entrer un nom';
@@ -106,6 +113,7 @@ class _EditPersoFormState extends State<EditPersoForm> {
           Text("Description :"),
           TextFormField(
             controller: _descController,
+            onChanged: (_) => _autoSave(),
             validator: (value) {return null;},
           ),
           SizedBox(height: 20),
@@ -129,28 +137,6 @@ class _EditPersoFormState extends State<EditPersoForm> {
     );
   }
 
-  Widget _saveButton(){
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      child: ElevatedButton(
-        onPressed: () async {
-          if (!_formKey.currentState!.validate()) return;
-
-          final persoEdit = widget.perso.copyWith(
-            name: _nameController.text,
-            desc: _descController.text.trim().isEmpty
-                ? null
-                : _descController.text.trim(),
-            imgPath: _galleryFile?.path,
-          );
-
-          Navigator.pop(context, persoEdit);
-        },
-        child: const Text('Enregistrer les modifications'),
-      ),
-    );
-  }
-
   void _showPicker({
     required BuildContext context,
   }) {
@@ -162,23 +148,25 @@ class _EditPersoFormState extends State<EditPersoForm> {
             children: <Widget>[
               ListTile(
                 leading: const Icon(Icons.photo_library),
-                title: const Text('Photo Library'),
+                title: const Text('Galerie'),
                 onTap: () async {
                   Navigator.pop(context);
                   final image = await imageService.pickAndSaveImage(ImageSource.gallery);
                   if (image != null) {
                     setState(() => _galleryFile = image);
+                    _autoSave();
                   }
                 },
               ),
               ListTile(
                 leading: const Icon(Icons.photo_camera),
-                title: const Text('Camera'),
+                title: const Text('Appareil photo'),
                 onTap: () async {
                   Navigator.pop(context);
                   final image = await imageService.pickAndSaveImage(ImageSource.camera);
                   if (image != null) {
                     setState(() => _galleryFile = image);
+                    _autoSave();
                   }
                 },
               ),
@@ -187,5 +175,21 @@ class _EditPersoFormState extends State<EditPersoForm> {
         );
       },
     );
+  }
+
+  // Sauvegarde après que l'utilisateur ait modifier un champ, avec un debonce de 500ms pour évité le spam
+  void _autoSave() {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    if (!_formKey.currentState!.validate()) return;
+
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      final updatedPerso = widget.perso.copyWith(
+        name: _nameController.text,
+        desc: _descController.text.trim(),
+        imgPath: _galleryFile?.path,
+      );
+      widget.onChanged(updatedPerso);
+
+    });
   }
 }
