@@ -92,7 +92,7 @@ class PartieCard extends StatelessWidget{
               )
             ),
           ),
-          Divider()
+          Divider(height: 0)
         ],
       )
     );
