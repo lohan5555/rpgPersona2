@@ -24,12 +24,13 @@ class PartieDetailPage extends StatefulWidget {
 
 class _PartieDetailPageState extends State<PartieDetailPage> {
   final PersoService persoService = PersoService();
-  late Partie _partie;
 
+  late Partie _partie;
   List<Perso> _perso = [];
 
   final TextEditingController _controllerNote = TextEditingController();
   final FocusNode _focusNodeNote = FocusNode();
+  bool focusText = false;
 
   @override
   void initState(){
@@ -37,6 +38,13 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
     _partie = widget.partie;
     _controllerNote.text = _partie.note ?? '';
     _loadPerso();
+
+    // Quand on clic sur la zone de text, on toggle focusText
+    _focusNodeNote.addListener(() {
+      setState(() {
+        focusText = _focusNodeNote.hasFocus;
+      });
+    });
   }
 
   @override
@@ -127,8 +135,10 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
         child: Column(
           children: [
             _header(),
-            const Divider(height: 0,),
+            const Divider(height: 0),
             _note(),
+            const Divider(height: 0),
+            //const SizedBox(height: 5,),
             _persoList()
           ],
         ),
@@ -144,7 +154,7 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
     return Padding(
       padding: const EdgeInsets.only(top:12, left: 15, right: 15, bottom: 0),
       child: AspectRatio(
-        aspectRatio: 16 / 9,
+        aspectRatio: focusText ? 16/6 : 16/9,
         child: ClipRRect(
           borderRadius: const BorderRadius.vertical(
               top: Radius.circular(16)
@@ -166,11 +176,10 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
           _focusNodeNote.unfocus();
         }),
         controller: _controllerNote,
-        maxLines: 6,
-        decoration: const InputDecoration(
-          labelText: 'Notes de la partie',
-          alignLabelWithHint: true,
-          border: OutlineInputBorder(),
+        maxLines: focusText ? 10 : 4,
+        decoration: InputDecoration.collapsed(
+          hintText: "Notes de la partie",
+          border: InputBorder.none,
         ),
         onChanged: (value) {
           Partie p = _partie.copyWith(note: _controllerNote.text);
