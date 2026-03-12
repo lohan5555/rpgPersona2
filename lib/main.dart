@@ -1,9 +1,10 @@
-import 'package:device_preview/device_preview.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rpg_persona2/ui/screens/home_screen.dart';
 import 'data/db.dart';
 import 'package:flutter/services.dart';
+
+//import 'package:device_preview/device_preview.dart';
+//import 'package:flutter/foundation.dart';
 
 void main() async{
   // Initialisation de la base de données au premier lancement
