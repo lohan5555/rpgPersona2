@@ -56,6 +56,45 @@ class DatabaseService {
             FOREIGN KEY (persoId) REFERENCES perso (id) ON DELETE CASCADE
           )
         ''');
+
+        await db.execute('''
+          INSERT INTO partie VALUES(
+            1,
+            'Ma super partie',
+            'One shot',
+            'Une aventure bien sympatique',
+            NULL,
+            '⚔️',
+            0
+          )
+        ''');
+        await db.execute('''
+          INSERT INTO perso VALUES(
+            1,
+            'Bob',
+            'Le Barbare',
+            "Il est gentil mais j'en ferai pas un elevage",
+            NULL,
+            0,
+            1
+          )
+        ''');
+        await db.execute('''
+          INSERT INTO stat VALUES(
+            1,
+            'Force',
+            100,
+            1
+          )
+        ''');
+        await db.execute('''
+          INSERT INTO stat VALUES(
+            2,
+            'Intelligence',
+            0,
+            1
+          )
+        ''');
       },
     );
     return _database;
