@@ -40,53 +40,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> deletePartie(int id) async {
     final partie = _partie.firstWhere((p) => p.id == id);
-
-    //supprime l'image de la partie
-    final imgPath = partie.imgPath;
-    if (imgPath != null && imgPath.contains("rpg_persona2")) {
-      final file = File(imgPath);
-      if (await file.exists()) {
-        await file.delete();
-      }
-    }
-
-    //supprime les images des perso supprimer en cascade
     final List<Perso> perso = await persoService.getAllpersoByPartie(id);
-    for (var p in perso){
-      final imgPath = p.imgPath;
-      if (imgPath != null && imgPath.contains("rpg_persona2")) {
-        final file = File(imgPath);
-        if (await file.exists()) {
-          await file.delete();
-        }
-      }
-    }
 
-    await partieService.deletePartie(id);
+    await partieService.deletePartie(id, perso, partie);
     await _loadPartie();
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Partie supprimée')),
     );
   }
 
-  Future<void> updatePartie(Partie partie) async {
+  Future<void> miseAJourPartie(Partie partie) async {
     //on supprime l'ancienne image si on a choisi une nouvelle
-    final oldPartie = _partie.firstWhere(
-          (p) => p.id == partie.id,
-    );
-    final oldPath = oldPartie.imgPath;
+    final oldPartie = _partie.firstWhere((p) => p.id == partie.id,);
+    await partieService.updateParie(partie, oldPartie.imgPath);
 
-    await partieService.updateParie(partie);
-
-    if (oldPath != null &&
-        oldPath != partie.imgPath &&
-        oldPath.contains("rpg_persona2") &&
-        partie.imgPath != null) {
-      final oldFile = File(oldPath);
-      if (await oldFile.exists()) {
-        await oldFile.delete();
-      }
-    }
     await _loadPartie();
   }
 
@@ -125,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
               for (int i = 0; i < _partie.length; i++) {
                 _partie[i] = _partie[i].copyWith(listPosition: i);
-                await partieService.updateParie(_partie[i]);
+                await partieService.updateParie(_partie[i], _partie[i].imgPath);
               }
             },
             itemBuilder: (context, index) {
@@ -135,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 key: ValueKey(partie.id), // IMPORTANT
                 partie: partie,
                 onDelete: () => deletePartie(partie.id!),
-                onEdit: updatePartie,
+                onEdit: miseAJourPartie,
               );
             },
           ),

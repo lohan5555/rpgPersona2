@@ -1,8 +1,11 @@
 
+import 'dart:io';
+
 import 'package:rpg_persona2/data/models/partie.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../data/db.dart';
+import '../data/models/perso.dart';
 
 class PartieService{
 
@@ -38,8 +41,31 @@ class PartieService{
     ];
   }
 
-  Future<void> deletePartie(int id) async {
+  Future<void> deletePartie(int id, List<Perso> perso, Partie partie) async {
     final db = await DatabaseService.database;
+
+    //supprime l'image de la partie
+    final imgPath = partie.imgPath;
+    if (imgPath != null && imgPath.contains("rpg_persona2")) {
+      final file = File(imgPath);
+      if (await file.exists()) {
+        await file.delete();
+      }
+    }
+
+    //supprime les images des perso supprimer en cascade
+    for (var p in perso){
+      final imgPath = p.imgPath;
+      if (imgPath != null && imgPath.contains("rpg_persona2")) {
+        final file = File(imgPath);
+        if (await file.exists()) {
+          await file.delete();
+        }
+      }
+    }
+
+
+
 
     await db?.delete(
       'partie',
@@ -48,8 +74,19 @@ class PartieService{
     );
   }
 
-  Future<void> updateParie(Partie partie) async {
+  Future<void> updateParie(Partie partie, String? oldPath) async {
     final db = await DatabaseService.database;
+
+
+    if (oldPath != null &&
+        oldPath != partie.imgPath &&
+        oldPath.contains("rpg_persona2") &&
+        partie.imgPath != null) {
+      final oldFile = File(oldPath);
+      if (await oldFile.exists()) {
+        await oldFile.delete();
+      }
+    }
 
     await db?.update(
       'partie',
