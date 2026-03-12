@@ -151,19 +151,30 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
   }
 
   Widget _header() {
-    return Padding(
-      padding: const EdgeInsets.only(top:12, left: 15, right: 15, bottom: 0),
-      child: AspectRatio(
-        aspectRatio: focusText ? 16/6 : 16/9,
-        child: ClipRRect(
-          borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(16)
-          ),
-          child: _partie.imgPath == null
-              ? Image.asset('assets/placeholder.jpeg', fit: BoxFit.cover)
-              : Image.file(File(_partie.imgPath!), width: 25, height: 25, fit: BoxFit.cover),
+    return TweenAnimationBuilder<double>(
+      tween: Tween<double>(
+        begin: focusText ? 9.0 : 6.0,
+        end: focusText ? 6.0 : 9.0
+      ),
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+      builder: (context, value, child){
+        return Padding(
+          padding: const EdgeInsets.only(top:12, left: 15, right: 15, bottom: 0),
+          child: AspectRatio(
+            aspectRatio: 16/value,
+            child: child
+          )
+        );
+      },
+      child: ClipRRect(
+        borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(16)
         ),
-      )
+        child: _partie.imgPath == null
+            ? Image.asset('assets/placeholder.jpeg', fit: BoxFit.cover)
+            : Image.file(File(_partie.imgPath!), width: 25, height: 25, fit: BoxFit.cover),
+      ),
     );
   }
 
