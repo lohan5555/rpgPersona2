@@ -253,58 +253,98 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: const Text('Nouveau personnage'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                TextField(
-                  controller: controllerNom,
-                  decoration: const InputDecoration(
-                    labelText: 'Nom du personnage',
-                    border: OutlineInputBorder(),
-                  ),
+        return StatefulBuilder(
+          builder: (context, setStateDialog) {
+            return AlertDialog(
+              backgroundColor: Colors.white,
+              surfaceTintColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              title: const Center(
+                child: Text(
+                  'Nouveau personnage',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
                 ),
-                const SizedBox(height: 8),
-                TextField(
-                  maxLines: 3,
-                  controller: controllerDesc,
-                  decoration: const InputDecoration(
-                    labelText: 'Description du personnage',
-                    border: OutlineInputBorder(),
-                  ),
-                )
+              ),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      controller: controllerNom,
+                      decoration: InputDecoration(
+                        labelText: 'Nom du personnage',
+                        //prefixIcon: const Icon(Icons.label_outline),
+                        filled: true,
+                        fillColor: Colors.grey[50],
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: controllerDesc,
+                      decoration: InputDecoration(
+                        labelText: 'Description du personnage',
+                        filled: true,
+                        fillColor: Colors.grey[50],
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              actions: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                        child: const Text("Annuler", style: TextStyle(color: Colors.grey)),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (controllerNom.text.trim().isEmpty) return;
+
+                          final perso = Perso(
+                              name: controllerNom.text.trim(),
+                              desc: controllerDesc.text.trim(),
+                              listPosition: _perso.length,
+                              partieId: _partie.id!
+                          );
+
+                          await persoService.insertPerso(perso);
+                          await _loadPerso();
+
+                          Navigator.pop(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromRGBO(233, 193, 108, 1),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                        child: const Text('Créer'),
+                      ),
+                    ),
+                  ],
+                ),
               ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Annuler'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                if (controllerNom.text.trim().isEmpty) return;
-
-                final perso = Perso(
-                  name: controllerNom.text.trim(),
-                  desc: controllerDesc.text.trim(),
-                  listPosition: _perso.length,
-                  partieId: _partie.id!
-                );
-
-                await persoService.insertPerso(perso);
-                await _loadPerso();
-
-                Navigator.pop(context);
-
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Perso créée')),
-                );
-              },
-              child: const Text('Créer'),
-            ),
-          ],
+            );
+          },
         );
       },
     );

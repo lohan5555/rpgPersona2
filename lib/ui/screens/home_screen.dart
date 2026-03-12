@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:rpg_persona2/services/emoji_service.dart';
 import 'package:rpg_persona2/services/perso_service.dart';
@@ -63,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Center(child: Text(widget.title)),
       ),
       body: SafeArea(
         child: _partie.isEmpty
@@ -128,69 +126,121 @@ class _MyHomePageState extends State<MyHomePage> {
         return StatefulBuilder(
           builder: (context, setStateDialog) {
             return AlertDialog(
-              title: const Text('Nouvelle partie'),
+              backgroundColor: Colors.white,
+              surfaceTintColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              title: const Center(
+                child: Text(
+                  'Nouvelle aventure',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                ),
+              ),
               content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        // Ferme le clavier texte avant d'ouvrir les emojis
-                        FocusScope.of(context).unfocus();
-
-                        emojiService.showEmojiPicker(context, (emoji) {
-                          setStateDialog(() {
-                            tempEmoji = emoji;
-                          });
-                        });
-                      },
-                      child: CircleAvatar(
-                        radius: 35,
-                        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-                        child: Text(tempEmoji, style: const TextStyle(fontSize: 35)),
-                      ),
+                    Stack(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            FocusScope.of(context).unfocus();
+                            emojiService.showEmojiPicker(context, (emoji) {
+                              setStateDialog(() => tempEmoji = emoji);
+                            });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[100],
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.grey[300]!, width: 1),
+                            ),
+                            child: Text(tempEmoji, style: const TextStyle(fontSize: 40)),
+                          ),
+                        ),
+                        Positioned(
+                          right: 0,
+                          bottom: 0,
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: const BoxDecoration(color: Color.fromRGBO(233, 193, 108, 1), shape: BoxShape.circle),
+                            child: const Icon(Icons.edit, size: 14, color: Colors.white),
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 30),
+
                     TextField(
                       controller: controllerNom,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Nom de la partie',
-                        border: OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.grey[50],
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide.none,
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 16),
+
                     TextField(
                       controller: controllerDesc,
-                      maxLines: 2,
-                      decoration: const InputDecoration(
-                        labelText: 'Description/Système de jeu',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: 'Système de jeu',
+                        //prefixIcon: const Icon(Icons.auto_stories_outlined),
+                        filled: true,
+                        fillColor: Colors.grey[50],
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide.none,
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
+              actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text("Annuler"),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    if (controllerNom.text.isEmpty) return;
-
-                    final partie = Partie(
-                      name: controllerNom.text.trim(),
-                      desc: controllerDesc.text.trim(),
-                      emoji: tempEmoji,
-                      listPosition: _partie.length
-                    );
-
-                    await partieService.insertPartie(partie);
-                    _loadPartie();
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Créer"),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                        child: const Text("Annuler", style: TextStyle(color: Colors.grey)),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (controllerNom.text.isEmpty) return;
+                          final partie = Partie(
+                            name: controllerNom.text.trim(),
+                            desc: controllerDesc.text.trim(),
+                            emoji: tempEmoji,
+                            listPosition: _partie.length,
+                          );
+                          await partieService.insertPartie(partie);
+                          _loadPartie();
+                          Navigator.pop(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromRGBO(233, 193, 108, 1),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                        child: const Text("Créer", style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             );
