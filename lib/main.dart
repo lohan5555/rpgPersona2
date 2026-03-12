@@ -1,3 +1,5 @@
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rpg_persona2/ui/screens/home_screen.dart';
 import 'data/db.dart';
@@ -9,6 +11,13 @@ void main() async{
   await DatabaseService.database;
 
   runApp(const MyApp());
+  // Pour tester différente taille de device
+  /*runApp(
+    DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) => MyApp(),
+    )
+  );*/
 }
 
 class MyApp extends StatelessWidget {

@@ -46,6 +46,9 @@ dependencies:
   #image
   image_picker: ^1.1.2
 
+  #test device
+  device_preview: ^1.2.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
