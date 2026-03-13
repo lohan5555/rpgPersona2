@@ -39,34 +39,42 @@ class PersoCard extends StatelessWidget{
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 26,
-                        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                        backgroundImage: perso.imgPath != null && perso.imgPath!.isNotEmpty
-                            ? FileImage(File(perso.imgPath!))
-                            : null,
-                        child: perso.imgPath == null || perso.imgPath!.isEmpty
-                            ? const Icon(Icons.person, size: 30)
-                            : null,
-                      ),
-                      const SizedBox(width: 20),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            perso.name,
-                            style: Theme.of(context).textTheme.titleLarge,
+                  Expanded(
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 26,
+                          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                          backgroundImage: perso.imgPath != null && perso.imgPath!.isNotEmpty
+                              ? FileImage(File(perso.imgPath!))
+                              : null,
+                          child: perso.imgPath == null || perso.imgPath!.isEmpty
+                              ? const Icon(Icons.person, size: 30)
+                              : null,
+                        ),
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child:Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                perso.name,
+                                style: Theme.of(context).textTheme.titleLarge,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                perso.desc ?? "",
+                                style: Theme.of(context).textTheme.bodySmall,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 8),
-                          Text(
-                            perso.desc ?? "",
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        ],
-                      ),
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                   IconButton(
                     icon: const Icon(Icons.delete),

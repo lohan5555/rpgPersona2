@@ -38,33 +38,41 @@ class PartieCard extends StatelessWidget{
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        partie.emoji,
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      const SizedBox(width: 20),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            partie.name,
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
-                          if (partie.desc != null && partie.desc!.isNotEmpty) ...[
-                            const SizedBox(height: 4),
-                            Text(
-                              partie.desc!,
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: Colors.grey[600],
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Text(
+                          partie.emoji,
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child:Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                partie.name,
+                                style: Theme.of(context).textTheme.titleLarge,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
                               ),
-                            ),
-                          ],
-                        ],
-                      ),
-                    ],
+                              if (partie.desc != null && partie.desc!.isNotEmpty) ...[
+                                const SizedBox(height: 4),
+                                Text(
+                                  partie.desc!,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                   IconButton(
                     icon: const Icon(Icons.delete),
