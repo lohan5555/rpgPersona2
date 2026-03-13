@@ -20,7 +20,7 @@ class PartieCard extends StatelessWidget{
     return Card(
       color: Colors.transparent,
       elevation: 0,
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: 0),
       shape: ContinuousRectangleBorder(),
       child:Column(
         children: [
