@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import '../../data/models/item.dart';
+import 'card/item_card.dart';
 
 class PersoInventaire extends StatelessWidget{
   final List<Item> item;
@@ -14,8 +15,8 @@ class PersoInventaire extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("inventaire"),
         Expanded(
           child: item.isEmpty
               ? const Center(child: Text('Inventaire vide'))
@@ -23,7 +24,12 @@ class PersoInventaire extends StatelessWidget{
             padding: const EdgeInsets.all(12),
             itemCount: item.length,
             itemBuilder: (context, index) {
-              return Text(item[index].name);
+              final items = item[index];
+              return ItemCard(
+                item: items,
+                //onDelete: () => onDelete(item[index].id!),
+                //onEdit: onEdit
+              );
             },
           ),
         ),

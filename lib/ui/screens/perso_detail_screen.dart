@@ -61,9 +61,22 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
     );
   }
 
+  Future<void> deleteItem(int id) async {
+    await itemService.deleteItem(id);
+    await _loadItem();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Item supprimée')),
+    );
+  }
+
   Future<void> updateStat(Stat stat) async{
     await statservice.updateStat(stat);
     await _loadStat();
+  }
+
+  Future<void> updateItem(Item item) async{
+    await itemService.updateItem(item);
+    await _loadItem();
   }
 
   @override
