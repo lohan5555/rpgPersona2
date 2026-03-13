@@ -107,6 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
       ),
       floatingActionButton: FloatingActionButton(
+        elevation: 2,
         onPressed: _showCreatePartieDialog,
         child: const Icon(Icons.add),
       ),

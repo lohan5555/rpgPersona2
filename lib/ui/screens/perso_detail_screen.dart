@@ -131,11 +131,13 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
   Widget? _buildFloatingActionButton() {
     if (_currentPageIndex == 0) {
       return FloatingActionButton(
+        elevation: 2,
         onPressed: _showCreateStatDialog,
         child: const Icon(Icons.add),
       );
     } else if (_currentPageIndex == 2) {
       return FloatingActionButton(
+        elevation: 2,
         onPressed: _showCreateItemDialog,
         child: const Icon(Icons.add),
       );

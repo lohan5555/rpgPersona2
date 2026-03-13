@@ -144,6 +144,7 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        elevation: 2,
         onPressed: _showCreatePersoDialog,
         child: const Icon(Icons.add_reaction_outlined),
       ),
