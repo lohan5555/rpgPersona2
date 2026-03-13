@@ -57,6 +57,7 @@ class _ItemCardState extends State<ItemCard>{
                         ),
                         if (focusCard && widget.item.desc != null && widget.item.desc!.isNotEmpty) ...[
                           Text(
+                            textAlign: TextAlign.justify,
                             widget.item.desc!,
                             style: Theme.of(context).textTheme.bodySmall,
                           )
