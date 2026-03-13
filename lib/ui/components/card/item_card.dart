@@ -56,6 +56,7 @@ class _ItemCardState extends State<ItemCard>{
                           overflow: TextOverflow.ellipsis,
                         ),
                         if (focusCard && widget.item.desc != null && widget.item.desc!.isNotEmpty) ...[
+                          SizedBox(height: 5),
                           Text(
                             textAlign: TextAlign.justify,
                             widget.item.desc!,
