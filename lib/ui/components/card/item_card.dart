@@ -47,12 +47,20 @@ class _ItemCardState extends State<ItemCard>{
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          widget.item.name,
-                          style: Theme.of(context).textTheme.titleLarge,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        if(!focusCard) ...[
+                          Text(
+                            widget.item.name,
+                            style: Theme.of(context).textTheme.titleLarge,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          )
+                        ],
+                        if(focusCard)...[
+                          Text(
+                            widget.item.name,
+                            style: Theme.of(context).textTheme.titleLarge,
+                          )
+                        ],
                         if (focusCard && widget.item.desc != null && widget.item.desc!.isNotEmpty) ...[
                           SizedBox(height: 5),
                           Text(
