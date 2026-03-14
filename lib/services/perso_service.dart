@@ -79,5 +79,29 @@ class PersoService{
     );
   }
 
+  Future<void> updatePersoListPosition() async {
+    final db = await DatabaseService.database;
+    if (db == null) return;
+
+    final List<Perso> persos = await getAllperso();
+
+    // Un Batch pour tout mettre à jour d'un coup
+    final batch = db.batch();
+
+    for (int i = 0; i < persos.length; i++) {
+      final persoMiseAJour = persos[i].copyWith(listPosition: i);
+
+      batch.update(
+        'perso',
+        persoMiseAJour.toMap(),
+        where: 'id = ?',
+        whereArgs: [persoMiseAJour.id],
+      );
+    }
+
+    // Exécuter toutes les mises à jour en une seule fois
+    await batch.commit(noResult: true);
+  }
+
 
 }

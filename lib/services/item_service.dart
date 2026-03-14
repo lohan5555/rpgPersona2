@@ -77,5 +77,29 @@ class ItemService{
     );
   }
 
+  Future<void> updateItemListPosition() async {
+    final db = await DatabaseService.database;
+    if (db == null) return;
+
+    final List<Item> items = await getAllItem();
+
+    // Un Batch pour tout mettre à jour d'un coup
+    final batch = db.batch();
+
+    for (int i = 0; i < items.length; i++) {
+      final itemMiseAJour = items[i].copyWith(listPosition: i);
+
+      batch.update(
+        'item',
+        itemMiseAJour.toMap(),
+        where: 'id = ?',
+        whereArgs: [itemMiseAJour.id],
+      );
+    }
+
+    // Exécuter toutes les mises à jour en une seule fois
+    await batch.commit(noResult: true);
+  }
+
 
 }

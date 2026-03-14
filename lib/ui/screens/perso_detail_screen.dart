@@ -63,6 +63,7 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
 
   Future<void> deleteItem(int id) async {
     await itemService.deleteItem(id);
+    await itemService.updateItemListPosition();
     await _loadItem();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Item supprimée')),

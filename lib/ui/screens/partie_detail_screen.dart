@@ -74,6 +74,7 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
     }
 
     await persoService.deletePerso(id);
+    await persoService.updatePersoListPosition();
     await _loadPerso();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Personnage supprimée')),

@@ -41,6 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final List<Perso> perso = await persoService.getAllpersoByPartie(id);
 
     await partieService.deletePartie(id, perso, partie);
+    await partieService.updatePartieListPosition();
     await _loadPartie();
 
     ScaffoldMessenger.of(context).showSnackBar(
