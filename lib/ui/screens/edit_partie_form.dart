@@ -130,17 +130,25 @@ class _EditPartieFormState extends State<EditPartieForm> {
   }
 
   Widget _displayImg(){
-    return SizedBox(
-        height: 200.0,
-        width: 300.0,
-        child: GestureDetector(
-          onTap: () {
-            _showPicker(context: context);
-          },
-          child: _galleryFile == null
-              ? const Center(child: Text("Cliquez pour ajouter une image."))
-              : Center(child: Image.file(_galleryFile!)),
-        )
+    return Column(
+      children: [
+        SizedBox(
+          height: 200.0,
+          width: 300.0,
+          child: GestureDetector(
+            onTap: () {
+              _showPicker(context: context);
+            },
+            child: _galleryFile == null
+                ? const Center(child: Text("Cliquez pour ajouter une image."))
+                : Center(child: Image.file(_galleryFile!)),
+          )
+        ),
+        if (_galleryFile != null) ...[
+          SizedBox(height: 5),
+          Center(child: Text("Cliquez pour modifier", style: TextStyle(color: Colors.grey)),)
+        ]
+      ],
     );
   }
 
