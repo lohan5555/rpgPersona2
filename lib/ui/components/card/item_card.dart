@@ -4,14 +4,14 @@ import '../../../data/models/item.dart';
 
 class ItemCard extends StatefulWidget {
   final Item item;
-  //final VoidCallback onDelete;
-  //final void Function(Stat) onEdit;
+  final VoidCallback onDelete;
+  final void Function(Item) onEdit;
 
   const ItemCard({
     super.key,
     required this.item,
-    //required this.onDelete,
-    //required this.onEdit
+    required this.onDelete,
+    required this.onEdit
   });
 
   @override
@@ -32,9 +32,7 @@ class _ItemCardState extends State<ItemCard>{
       child:Column(
         children: [
           InkWell(
-            onLongPress: () {
-              print("long tap");
-            },
+            onLongPress: _showDeleteStatDialog,
             onTap: () {
               setState(() {
                 focusCard = !focusCard;
@@ -68,9 +66,19 @@ class _ItemCardState extends State<ItemCard>{
                   ),
                   Row(
                     children: [
-                      IconButton(onPressed: () {}, icon: const Icon(Icons.remove), iconSize: 15),
+                      IconButton(onPressed: () async{
+                        final editItem = widget.item.copyWith(quantity: widget.item.quantity -1);
+                        widget.onEdit(editItem);
+                      }, 
+                      icon: const Icon(Icons.remove),
+                      iconSize: 15),
                       Text(widget.item.quantity.toString()),
-                      IconButton(onPressed: () {}, icon: const Icon(Icons.add), iconSize: 15),
+                      IconButton(onPressed: () async{
+                        final editItem = widget.item.copyWith(quantity: widget.item.quantity +1);
+                        widget.onEdit(editItem);
+                      },
+                      icon: const Icon(Icons.add),
+                      iconSize: 15),
                     ],
                   ),
                 ],
@@ -80,6 +88,28 @@ class _ItemCardState extends State<ItemCard>{
           Divider(height: 0)
         ],
       )
+    );
+  }
+
+  Future<void> _showDeleteStatDialog() async {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Attention !'),
+        content: const Text("Êtes-vous sur de vouloir supprimer cet objet de l'inventaire ? Cette action est définitive."),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('Annuler'),
+          ),
+          TextButton(
+              onPressed: () => {
+                Navigator.pop(context, 'OK'),
+                widget.onDelete()
+              },
+              child: const Text('OK')),
+        ],
+      ),
     );
   }
 

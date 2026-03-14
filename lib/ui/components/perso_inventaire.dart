@@ -5,10 +5,14 @@ import 'card/item_card.dart';
 
 class PersoInventaire extends StatelessWidget{
   final List<Item> item;
+  final void Function(int) onDelete;
+  final void Function(Item) onEdit;
 
   const PersoInventaire({
     super.key,
-    required this.item
+    required this.item,
+    required this.onDelete,
+    required this.onEdit
   });
 
 
@@ -27,8 +31,8 @@ class PersoInventaire extends StatelessWidget{
               final items = item[index];
               return ItemCard(
                 item: items,
-                //onDelete: () => onDelete(item[index].id!),
-                //onEdit: onEdit
+                onDelete: () => onDelete(item[index].id!),
+                onEdit: onEdit
               );
             },
           ),

@@ -112,7 +112,7 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
         children: [
           PersoStatistique(stat: _stat, onDelete: deleteStat, onEdit: updateStat),
           PersoGeneral(perso: _perso, onEdit: widget.onEdit),
-          PersoInventaire(item: _item,)
+          PersoInventaire(item: _item, onDelete: deleteItem, onEdit: updateItem)
         ],
       ),
       bottomNavigationBar: NavigationBar(
