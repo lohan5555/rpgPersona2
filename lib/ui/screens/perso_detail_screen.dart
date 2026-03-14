@@ -167,57 +167,90 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           title: const Text('Nouvelle statistique'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 TextField(
                   controller: controllerNom,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Statistique',
-                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.grey[50],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide.none,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),
                 TextField(
                   controller: controllerValeur,
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Valeur de la statistique',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: "Valeur de la statistique",
+                    filled: true,
+                    fillColor: Colors.grey[50],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide.none,
+                    ),
                   ),
                 )
               ],
             ),
           ),
           actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Annuler'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                if (controllerNom.text.trim().isEmpty) return;
-                if (controllerValeur.text.trim().isEmpty) return;
-                if(double.tryParse(controllerValeur.text.trim()) == null ) return;
+            Row(
+              children: [
+                Expanded(
+                  child: TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
+                    child: const Text('Annuler'),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (controllerNom.text.trim().isEmpty) return;
+                      if (controllerValeur.text.trim().isEmpty) return;
+                      if(double.tryParse(controllerValeur.text.trim()) == null ) return;
 
-                final stat = Stat(
-                    name: controllerNom.text.trim(),
-                    valeur: double.parse(controllerValeur.text.trim()),
-                    persoId: _perso.id!
-                );
+                      final stat = Stat(
+                          name: controllerNom.text.trim(),
+                          valeur: double.parse(controllerValeur.text.trim()),
+                          persoId: _perso.id!
+                      );
 
-                await statservice.insertStat(stat);
-                await _loadStat();
+                      await statservice.insertStat(stat);
+                      await _loadStat();
 
-                Navigator.pop(context);
+                      Navigator.pop(context);
 
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Stat créée')),
-                );
-              },
-              child: const Text('Créer'),
-            ),
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Stat créée')),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromRGBO(233, 193, 108, 1),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
+                    child: const Text('Créer'),
+                  ),
+                ),
+              ],
+            )
           ],
         );
       },
@@ -232,55 +265,88 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           title: const Text('Nouvel objet'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 TextField(
                   controller: controllerNom,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: "Nom de l'objet",
-                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.grey[50],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide.none,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),
                 TextField(
                   controller: controllerDesc,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: "Description de l'objet",
-                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.grey[50],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide.none,
+                    ),
                   ),
                 )
               ],
             ),
           ),
           actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Annuler'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                if (controllerNom.text.trim().isEmpty) return;
+            Row(
+              children: [
+                Expanded(
+                  child: TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
+                    child: const Text('Annuler'),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (controllerNom.text.trim().isEmpty) return;
 
-                final item = Item(
-                  name: controllerNom.text.trim(),
-                  desc: controllerDesc.text.trim(),
-                  quantity: 1,
-                  listPosition: _items.length,
-                  persoId: _perso.id!
-                );
+                      final item = Item(
+                          name: controllerNom.text.trim(),
+                          desc: controllerDesc.text.trim(),
+                          quantity: 1,
+                          listPosition: _items.length,
+                          persoId: _perso.id!
+                      );
 
-                await itemService.insertItem(item);
-                await _loadItem();
+                      await itemService.insertItem(item);
+                      await _loadItem();
 
-                Navigator.pop(context);
+                      Navigator.pop(context);
 
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Objet créée')),
-                );
-              },
-              child: const Text('Créer'),
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Objet créée')),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromRGBO(233, 193, 108, 1),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
+                    child: const Text('Créer'),
+                  )
+                )
+              ],
             ),
           ],
         );
