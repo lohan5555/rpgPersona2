@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -21,5 +22,12 @@ class ImageService {
     final savedImage = File('${directory.path}/$fileName');
 
     return File(pickedFile.path).copy(savedImage.path);
+  }
+
+  Future<File> saveByteImage(Uint8List bytes) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final String fileName = 'crop_${DateTime.now().millisecondsSinceEpoch}.jpg';
+    final File file = File('${directory.path}/$fileName');
+    return await file.writeAsBytes(bytes);
   }
 }

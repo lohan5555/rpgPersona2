@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:custom_image_crop/custom_image_crop.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rpg_persona2/services/emoji_service.dart';
 
 import '../../data/models/partie.dart';
 import '../../services/image_service.dart';
+import 'crop_screen.dart';
 
 
 class EditPartieForm extends StatefulWidget {
@@ -33,6 +36,7 @@ class _EditPartieFormState extends State<EditPartieForm> {
   final _nameController = TextEditingController();
   final _descController = TextEditingController();
   late String _tempEmoji;
+  late CustomImageCropController _cropController;
 
   Timer? _debounce;
 
@@ -40,6 +44,7 @@ class _EditPartieFormState extends State<EditPartieForm> {
   void dispose() {
     _nameController.dispose();
     _descController.dispose();
+    _cropController.dispose();
     super.dispose();
   }
 
@@ -50,6 +55,7 @@ class _EditPartieFormState extends State<EditPartieForm> {
     _nameController.text = widget.partie.name;
     _descController.text = widget.partie.desc ?? '';
     _tempEmoji = widget.partie.emoji;
+    _cropController = CustomImageCropController();
 
     if (widget.partie.imgPath != null) {
       _galleryFile = File(widget.partie.imgPath!);
@@ -206,8 +212,7 @@ class _EditPartieFormState extends State<EditPartieForm> {
                   Navigator.pop(context);
                   final image = await imageService.pickAndSaveImage(ImageSource.gallery);
                   if (image != null) {
-                    setState(() => _galleryFile = image);
-                    _autoSave();
+                    _startCrop(image);
                   }
                 },
               ),
@@ -218,8 +223,7 @@ class _EditPartieFormState extends State<EditPartieForm> {
                   Navigator.pop(context);
                   final image = await imageService.pickAndSaveImage(ImageSource.camera);
                   if (image != null) {
-                    setState(() => _galleryFile = image);
-                    _autoSave();
+                    _startCrop(image);
                   }
                 },
               ),
@@ -228,6 +232,29 @@ class _EditPartieFormState extends State<EditPartieForm> {
         );
       },
     );
+  }
+
+  Future<void> _startCrop(File file) async {
+    // On ouvre la page de crop et on attend le résultat
+    final MemoryImage? croppedImage = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CropPage(
+            imageFile: file,
+            controller: _cropController,
+            shape: CustomCropShape.Ratio
+        ),
+      ),
+    );
+
+    if (croppedImage != null) {
+      // Convertir MemoryImage en File pour l'enregistrer physiquement
+      final tempFile = await imageService.saveByteImage(croppedImage.bytes);
+      setState(() {
+        _galleryFile = tempFile;
+      });
+      _autoSave();
+    }
   }
 
   // Sauvegarde après que l'utilisateur ait modifier un champ, avec un debonce de 500ms pour évité le spam

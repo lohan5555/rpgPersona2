@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:custom_image_crop/custom_image_crop.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../data/models/perso.dart';
 import '../../services/image_service.dart';
+import 'crop_screen.dart';
 
 
 class EditPersoForm extends StatefulWidget {
@@ -29,6 +31,7 @@ class _EditPersoFormState extends State<EditPersoForm> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _descController = TextEditingController();
+  late CustomImageCropController _cropController;
 
   Timer? _debounce;
 
@@ -36,6 +39,7 @@ class _EditPersoFormState extends State<EditPersoForm> {
   void dispose() {
     _nameController.dispose();
     _descController.dispose();
+    _cropController.dispose();
     super.dispose();
   }
 
@@ -45,6 +49,7 @@ class _EditPersoFormState extends State<EditPersoForm> {
 
     _nameController.text = widget.perso.name;
     _descController.text = widget.perso.desc ?? '';
+    _cropController = CustomImageCropController();
 
     if (widget.perso.imgPath != null) {
       _galleryFile = File(widget.perso.imgPath!);
@@ -161,8 +166,7 @@ class _EditPersoFormState extends State<EditPersoForm> {
                   Navigator.pop(context);
                   final image = await imageService.pickAndSaveImage(ImageSource.gallery);
                   if (image != null) {
-                    setState(() => _galleryFile = image);
-                    _autoSave();
+                    _startCrop(image);
                   }
                 },
               ),
@@ -173,8 +177,7 @@ class _EditPersoFormState extends State<EditPersoForm> {
                   Navigator.pop(context);
                   final image = await imageService.pickAndSaveImage(ImageSource.camera);
                   if (image != null) {
-                    setState(() => _galleryFile = image);
-                    _autoSave();
+                    _startCrop(image);
                   }
                 },
               ),
@@ -183,6 +186,29 @@ class _EditPersoFormState extends State<EditPersoForm> {
         );
       },
     );
+  }
+
+  Future<void> _startCrop(File file) async {
+    // On ouvre la page de crop et on attend le résultat
+    final MemoryImage? croppedImage = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CropPage(
+            imageFile: file,
+            controller: _cropController,
+            shape: CustomCropShape.Circle
+        ),
+      ),
+    );
+
+    if (croppedImage != null) {
+      // Convertir MemoryImage en File pour l'enregistrer physiquement
+      final tempFile = await imageService.saveByteImage(croppedImage.bytes);
+      setState(() {
+        _galleryFile = tempFile;
+      });
+      _autoSave();
+    }
   }
 
   // Sauvegarde après que l'utilisateur ait modifier un champ, avec un debonce de 500ms pour évité le spam
