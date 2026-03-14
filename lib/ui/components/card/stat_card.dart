@@ -125,20 +125,43 @@ class _StatCardState extends State<StatCard>{
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: const Text('Attention'),
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        title: const Center(child: Text('Attention !')),
         content: const Text('Êtes-vous sur de vouloir supprimer cette statistique ? Cette action est définitive.'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text('Annuler'),
-          ),
-          TextButton(
-              onPressed: () => {
-                Navigator.pop(context, 'OK'),
-                widget.onDelete()
-              },
-              child: const Text('OK')),
-        ],
+          actions: [
+            Row(
+              children: [
+                Expanded(
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
+                    onPressed: () => Navigator.pop(context, 'Cancel'),
+                    child: const Text('Annuler', style: TextStyle(color: Colors.grey)),
+                  )
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Color.fromRGBO(233, 193, 108, 1),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
+                    onPressed: () => {
+                      Navigator.pop(context, 'OK'),
+                      widget.onDelete()
+                    },
+                    child: const Text('OK')
+                  )
+                ),
+              ],
+            )
+          ]
       ),
     );
   }
