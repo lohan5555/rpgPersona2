@@ -64,12 +64,14 @@ class PersoCard extends StatelessWidget{
                                 maxLines: 1,
                               ),
                               const SizedBox(height: 8),
-                              Text(
-                                perso.desc ?? "",
-                                style: Theme.of(context).textTheme.bodySmall,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                              ),
+                              if (perso.desc != null && perso.desc!.isNotEmpty) ...[
+                                Text(
+                                  perso.desc!,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                              ]
                             ],
                           ),
                         )
