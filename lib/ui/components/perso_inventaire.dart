@@ -1,38 +1,87 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 import '../../data/models/item.dart';
 import 'card/item_card.dart';
 
-class PersoInventaire extends StatelessWidget{
-  final List<Item> item;
+class PersoInventaire extends StatefulWidget {
+  final List<Item> items;
   final void Function(int) onDelete;
-  final void Function(Item) onEdit;
+  final Future<void> Function(Item) onEdit;
 
   const PersoInventaire({
     super.key,
-    required this.item,
+    required this.items,
     required this.onDelete,
     required this.onEdit
   });
 
+  @override
+  State<PersoInventaire> createState() => _PersoInventaireState();
+}
+
+class _PersoInventaireState extends State<PersoInventaire> {
+
+  late List<Item> _items;
+
+  @override
+  void initState() {
+    super.initState();
+    _items = List.from(widget.items);
+  }
+
+  // Cette méthode est appelée par Flutter à chaque fois que le widget "parent"
+  // envoie de nouvelles données
+  @override
+  void didUpdateWidget(covariant PersoInventaire oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _items = List.from(widget.items);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-          child: item.isEmpty
+          child: _items.isEmpty
               ? const Center(child: Text('Inventaire vide'))
-              : ListView.builder(
-            padding: const EdgeInsets.all(12),
-            itemCount: item.length,
+              : ReorderableListView.builder(
+            proxyDecorator: (Widget child, int index, Animation<double> animation) {
+              return AnimatedBuilder(
+                animation: animation,
+                builder: (BuildContext context, Widget? child) {
+                  return Material(
+                    color: Colors.transparent,
+                    child: child,
+                  );
+                },
+                child: child,
+              );
+            },
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            itemCount: _items.length,
+            onReorder: (oldIndex, newIndex) {
+
+              setState(() {
+                if (newIndex > oldIndex) newIndex--;
+
+                final item = _items.removeAt(oldIndex);
+                _items.insert(newIndex, item);
+              });
+
+              for (int i = 0; i < _items.length; i++) {
+                  widget.onEdit(
+                    _items[i].copyWith(listPosition: i)
+                );
+              }
+            },
             itemBuilder: (context, index) {
-              final items = item[index];
+              final item = _items[index];
+
               return ItemCard(
-                item: items,
-                onDelete: () => onDelete(item[index].id!),
-                onEdit: onEdit
+                key: ValueKey(item.id),
+                item: item,
+                onDelete: () => widget.onDelete(item.id!),
+                onEdit: widget.onEdit,
               );
             },
           ),

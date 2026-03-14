@@ -32,14 +32,13 @@ class _ItemCardState extends State<ItemCard>{
       child:Column(
         children: [
           InkWell(
-            onLongPress: _showDeleteStatDialog,
             onTap: () {
               setState(() {
                 focusCard = !focusCard;
               });
             },
             child: Padding(
-              padding: const EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 16),
+              padding: const EdgeInsets.only(left: 16, top: 16, right: 10, bottom: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -87,6 +86,7 @@ class _ItemCardState extends State<ItemCard>{
                       },
                       icon: const Icon(Icons.add),
                       iconSize: 15),
+                      IconButton(onPressed: _showDeleteStatDialog, icon: Icon(Icons.delete, size: 20))
                     ],
                   ),
                 ],

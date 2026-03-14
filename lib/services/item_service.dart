@@ -28,6 +28,7 @@ class ItemService{
             name: map['name'] as String,
             quantity: map['quantity'] as int,
             desc: map['desc'] as String?,
+            listPosition: map['listPosition'] as int,
             persoId: map['persoId'] as int
         ),
     ];
@@ -38,7 +39,8 @@ class ItemService{
 
     final List<Map<String, Object?>> itemMap = await db!.query('item',
         where: 'persoId = ?',
-        whereArgs: [persoId]
+        whereArgs: [persoId],
+        orderBy: 'listPosition ASC'
     );
 
     return [
@@ -48,6 +50,7 @@ class ItemService{
             name: map['name'] as String,
             quantity: map['quantity'] as int,
             desc: map['desc'] as String?,
+            listPosition: map['listPosition'] as int,
             persoId: map['persoId'] as int
         ),
     ];

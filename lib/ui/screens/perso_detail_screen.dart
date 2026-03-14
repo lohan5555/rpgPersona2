@@ -29,7 +29,7 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
   late Perso _perso;
 
   List<Stat> _stat = [];
-  List<Item> _item = [];
+  List<Item> _items = [];
 
   @override
   void initState(){
@@ -47,9 +47,9 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
   }
 
   Future<void> _loadItem() async{
-    final item = await itemService.getAllItemByPerso(_perso.id!);
+    final items = await itemService.getAllItemByPerso(_perso.id!);
     setState(() {
-      _item = item;
+      _items = items;
     });
   }
 
@@ -112,7 +112,7 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
         children: [
           PersoStatistique(stat: _stat, onDelete: deleteStat, onEdit: updateStat),
           PersoGeneral(perso: _perso, onEdit: widget.onEdit),
-          PersoInventaire(item: _item, onDelete: deleteItem, onEdit: updateItem)
+          PersoInventaire(items: _items, onDelete: deleteItem, onEdit: updateItem)
         ],
       ),
       bottomNavigationBar: NavigationBar(
@@ -266,6 +266,7 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
                   name: controllerNom.text.trim(),
                   desc: controllerDesc.text.trim(),
                   quantity: 1,
+                  listPosition: _items.length,
                   persoId: _perso.id!
                 );
 

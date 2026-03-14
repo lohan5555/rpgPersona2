@@ -52,6 +52,7 @@ class DatabaseService {
             name TEXT NOT NULL,
             quantity INT NOT NULL,
             desc TEXT,
+            listPosition INT NOT NULL,
             persoId INTEGER NOT NULL,
             FOREIGN KEY (persoId) REFERENCES perso (id) ON DELETE CASCADE
           )
