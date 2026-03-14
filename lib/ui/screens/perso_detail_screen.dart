@@ -117,6 +117,8 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
         ],
       ),
       bottomNavigationBar: NavigationBar(
+          backgroundColor: Colors.grey[100],
+          indicatorColor: Color.fromRGBO(251, 196, 58, 1.0),
           onDestinationSelected: (int index) {
             setState(() {
               _currentPageIndex = index;
