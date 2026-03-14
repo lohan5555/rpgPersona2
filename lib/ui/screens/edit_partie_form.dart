@@ -145,23 +145,40 @@ class _EditPartieFormState extends State<EditPartieForm> {
   }
 
   Widget _displayEmoji(StateSetter setStateDialog){
-    return GestureDetector(
-      onTap: () {
-        // Ferme le clavier texte avant d'ouvrir les emojis
-        FocusScope.of(context).unfocus();
+    return Stack(
+      children: [
+        GestureDetector(
+          onTap: () {
+            // Ferme le clavier texte avant d'ouvrir les emojis
+            FocusScope.of(context).unfocus();
 
-        emojiService.showEmojiPicker(context, (emoji) {
-          setStateDialog(() {
-            _tempEmoji = emoji;
-          });
-          _autoSave();
-        });
-      },
-      child: CircleAvatar(
-        radius: 35,
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        child: Text(_tempEmoji, style: const TextStyle(fontSize: 35)),
-      ),
+            emojiService.showEmojiPicker(context, (emoji) {
+              setStateDialog(() {
+                _tempEmoji = emoji;
+              });
+              _autoSave();
+            });
+          },
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.grey[300]!, width: 1),
+            ),
+            child: Text(_tempEmoji, style: const TextStyle(fontSize: 40)),
+          ),
+        ),
+        Positioned(
+          right: 0,
+          bottom: 0,
+          child: Container(
+            padding: const EdgeInsets.all(4),
+            decoration: const BoxDecoration(color: Color.fromRGBO(233, 193, 108, 1), shape: BoxShape.circle),
+            child: const Icon(Icons.edit, size: 14, color: Colors.white),
+          ),
+        ),
+      ],
     );
   }
 
