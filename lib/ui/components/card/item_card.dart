@@ -117,7 +117,7 @@ class _ItemCardState extends State<ItemCard>{
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Modifier l'objet"),
+                const Expanded(child: Text("Modifier l'objet",overflow: TextOverflow.ellipsis)),
                 IconButton(
                   onPressed: () async {
                     bool deleted = await _showDeleteItemDialog();
