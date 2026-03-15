@@ -27,6 +27,7 @@ class StatService{
             id: map['id'] as int,
             name: map['name'] as String,
             valeur: map['valeur'] as double,
+            listPosition: map['listPosition'] as int,
             persoId: map['persoId'] as int
         ),
     ];
@@ -37,7 +38,8 @@ class StatService{
 
     final List<Map<String, Object?>> statMap = await db!.query('stat',
         where: 'persoId = ?',
-        whereArgs: [persoId]
+        whereArgs: [persoId],
+        orderBy: 'listPosition ASC',
     );
 
     return [
@@ -46,6 +48,7 @@ class StatService{
             id: map['id'] as int,
             name: map['name'] as String,
             valeur: map['valeur'] as double,
+            listPosition: map['listPosition'] as int,
             persoId: map['persoId'] as int
         ),
     ];
@@ -70,6 +73,30 @@ class StatService{
       where: 'id = ?',
       whereArgs: [stat.id],
     );
+  }
+
+  Future<void> updateStatListPosition() async {
+    final db = await DatabaseService.database;
+    if (db == null) return;
+
+    final List<Stat> stats = await getAllstat();
+
+    // Un Batch pour tout mettre à jour d'un coup
+    final batch = db.batch();
+
+    for (int i = 0; i < stats.length; i++) {
+      final statMiseAJour = stats[i].copyWith(listPosition: i);
+
+      batch.update(
+        'stat',
+        statMiseAJour.toMap(),
+        where: 'id = ?',
+        whereArgs: [statMiseAJour.id],
+      );
+    }
+
+    // Exécuter toutes les mises à jour en une seule fois
+    await batch.commit(noResult: true);
   }
 
 

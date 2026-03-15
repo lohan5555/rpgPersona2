@@ -42,6 +42,7 @@ class DatabaseService {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             valeur FLOAT NOT NULL,
+            listPosition INT NOT NULL,
             persoId INTEGER NOT NULL,
             FOREIGN KEY (persoId) REFERENCES perso (id) ON DELETE CASCADE
           )
@@ -85,6 +86,7 @@ class DatabaseService {
             1,
             'Force',
             100,
+            0,
             1
           )
         ''');
@@ -92,6 +94,7 @@ class DatabaseService {
           INSERT INTO stat VALUES(
             2,
             'Intelligence',
+            0,
             0,
             1
           )

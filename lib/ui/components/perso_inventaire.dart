@@ -26,7 +26,7 @@ class _PersoInventaireState extends State<PersoInventaire> {
   @override
   void initState() {
     super.initState();
-    _items = List.from(widget.items);
+    _items = widget.items;
   }
 
   // Cette méthode est appelée par Flutter à chaque fois que le widget "parent"
@@ -34,7 +34,7 @@ class _PersoInventaireState extends State<PersoInventaire> {
   @override
   void didUpdateWidget(covariant PersoInventaire oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _items = List.from(widget.items);
+    _items = widget.items;
   }
 
   @override

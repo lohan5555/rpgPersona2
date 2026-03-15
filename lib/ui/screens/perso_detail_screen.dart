@@ -229,6 +229,7 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
                       final stat = Stat(
                           name: controllerNom.text.trim(),
                           valeur: double.parse(controllerValeur.text.trim()),
+                          listPosition: _stat.length,
                           persoId: _perso.id!
                       );
 
