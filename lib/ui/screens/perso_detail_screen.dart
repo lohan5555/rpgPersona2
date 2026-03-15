@@ -57,7 +57,7 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
     await statservice.deleteStat(id);
     await _loadStat();
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Statistique supprimée')),
+      const SnackBar(content: Text('Caractéristique supprimée')),
     );
   }
 
@@ -129,7 +129,7 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
             NavigationDestination(
                 icon: Icon(Icons.query_stats_outlined),
                 selectedIcon: Icon(Icons.query_stats),
-                label: 'Statistique'),
+                label: 'Caractéristique'),
             NavigationDestination(
                 icon: Icon(Icons.person_outlined),
                 selectedIcon: Icon(Icons.person),
@@ -172,14 +172,14 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.white,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          title: const Text('Nouvelle statistique'),
+          title: const Text('Nouvelle caractéristique'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 TextField(
                   controller: controllerNom,
                   decoration: InputDecoration(
-                    labelText: 'Statistique',
+                    labelText: 'Caractéristique',
                     filled: true,
                     fillColor: Colors.grey[50],
                     border: OutlineInputBorder(
@@ -193,7 +193,7 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
                   controller: controllerValeur,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    labelText: "Valeur de la statistique",
+                    labelText: "Valeur de la caractéristique",
                     filled: true,
                     fillColor: Colors.grey[50],
                     border: OutlineInputBorder(

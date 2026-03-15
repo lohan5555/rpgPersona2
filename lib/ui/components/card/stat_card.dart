@@ -151,7 +151,7 @@ class _StatCardState extends State<StatCard>{
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Expanded(child: Text("Modifier la statistique",overflow: TextOverflow.ellipsis)),
+                const Expanded(child: Text("Modifier la caractéristique",overflow: TextOverflow.ellipsis)),
                 IconButton(
                     onPressed: () async {
                       bool deleted = await _showDeleteStatDialog();
@@ -171,7 +171,7 @@ class _StatCardState extends State<StatCard>{
                 TextField(
                   controller: controllerNom,
                   decoration: InputDecoration(
-                    labelText: "Statistique",
+                    labelText: "Caractéristique",
                     filled: true,
                     fillColor: Colors.grey[50],
                     border: OutlineInputBorder(
@@ -257,7 +257,7 @@ class _StatCardState extends State<StatCard>{
         surfaceTintColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         title: const Center(child: Text('Attention !')),
-        content: const Text('Êtes-vous sur de vouloir supprimer cette statistique ? Cette action est définitive.'),
+        content: const Text('Êtes-vous sur de vouloir supprimer cette caractéristique ? Cette action est définitive.'),
           actions: [
             Row(
               children: [
