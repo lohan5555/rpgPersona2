@@ -30,14 +30,11 @@ class _StatCardState extends State<StatCard>{
           color: Colors.transparent,
           elevation: 0,
           margin: const EdgeInsets.only(bottom: 0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
+          shape: ContinuousRectangleBorder(),
           child: InkWell(
-            //onLongPress: _showDeleteStatDialog,
-            borderRadius: BorderRadius.circular(16),
+            onTap: () {}, // obligatoire pour que le InkWell réagisse
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.only(left: 16, top: 16, right: 10, bottom: 0),
               child: Column(
                 children: [
                   Text(
