@@ -289,6 +289,7 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
                 const SizedBox(height: 8),
                 TextField(
                   controller: controllerDesc,
+                  maxLines: 3,
                   decoration: InputDecoration(
                     labelText: "Description de l'objet",
                     filled: true,
