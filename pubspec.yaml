@@ -52,6 +52,8 @@ dependencies:
   #crop images
   custom_image_crop: ^0.1.1
 
+  numberpicker: ^2.1.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

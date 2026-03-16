@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 import '../../../data/models/stat.dart';
 
@@ -132,114 +133,120 @@ class _StatCardState extends State<StatCard>{
 
   Future<void> _showEditStatDialog() async {
     final TextEditingController controllerNom = TextEditingController();
-    final TextEditingController controllerValeur = TextEditingController();
 
     controllerNom.text = widget.stat.name;
-    controllerValeur.text = widget.stat.valeur.toString();
+    double valeur = widget.stat.valeur;
 
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          title: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Expanded(child: Text("Modifier la caractéristique",overflow: TextOverflow.ellipsis)),
-                IconButton(
-                    onPressed: () async {
-                      bool deleted = await _showDeleteStatDialog();
+        return StatefulBuilder( // Pour que setState puisse rebuild le dialog
+          builder: (context, setStateDialog) {
+            return AlertDialog(
+              backgroundColor: Colors.white,
+              surfaceTintColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              title: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Expanded(child: Text("Modifier la caractéristique",overflow: TextOverflow.ellipsis)),
+                    IconButton(
+                        onPressed: () async {
+                          bool deleted = await _showDeleteStatDialog();
 
-                      if (deleted) {
-                        Navigator.pop(context);
-                      }
-                    },
-                    icon: Icon(Icons.delete)
-                )
-              ],
-            ),
-          ),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                TextField(
-                  controller: controllerNom,
-                  decoration: InputDecoration(
-                    labelText: "Caractéristique",
-                    filled: true,
-                    fillColor: Colors.grey[50],
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: controllerValeur,
-                  decoration: InputDecoration(
-                    labelText: "Valeur",
-                    filled: true,
-                    fillColor: Colors.grey[50],
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          actions: [
-            Row(
-              children: [
-                Expanded(
-                  child: TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    ),
-                    child: const Text('Annuler'),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        if (controllerNom.text.trim().isEmpty) return;
-                        if (controllerValeur.text.trim().isEmpty) return;
-                        if(double.tryParse(controllerValeur.text.trim()) == null ) return;
-
-                        final statModifier = widget.stat.copyWith(
-                          name: controllerNom.text.trim(),
-                          valeur: double.parse(controllerValeur.text.trim()),
-                        );
-
-                        widget.onEdit(statModifier);
-
-                        Navigator.pop(context);
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Stat Modifier')),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromRGBO(233, 193, 108, 1),
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                      child: const Text('Modifier'),
+                          if (deleted) {
+                            Navigator.pop(context);
+                          }
+                        },
+                        icon: Icon(Icons.delete)
                     )
-                )
+                  ],
+                ),
+              ),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    TextField(
+                      controller: controllerNom,
+                      decoration: InputDecoration(
+                        labelText: "Caractéristique",
+                        filled: true,
+                        fillColor: Colors.grey[50],
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Center(child:
+                      Text(
+                        valeur.toStringAsFixed(1),
+                        style: const TextStyle(fontSize: 32),
+                      ),
+                    ),
+                    DecimalNumberPicker(
+                      value: valeur,
+                      minValue: -1000,
+                      maxValue: 1000,
+                      decimalPlaces: 1,
+                      onChanged: (newValue) {
+                        setStateDialog(() {
+                          valeur = round1(newValue);
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                        child: const Text('Annuler'),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (controllerNom.text.trim().isEmpty) return;
+
+                          final statModifier = widget.stat.copyWith(
+                            name: controllerNom.text.trim(),
+                            valeur: valeur,
+                          );
+
+                          widget.onEdit(statModifier);
+
+                          Navigator.pop(context);
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Stat Modifier')),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromRGBO(233, 193, 108, 1),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                        child: const Text('Modifier'),
+                      )
+                    )
+                  ],
+                ),
               ],
-            ),
-          ],
+            );
+          }
         );
       },
     );
