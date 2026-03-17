@@ -38,6 +38,7 @@ class CropPage extends StatelessWidget {
             children: [
               Expanded(
                 child: CustomImageCrop(
+                  outlineColor: Color.fromRGBO(251, 196, 58, 1.0),
                   cropController: controller,
                   image: FileImage(imageFile),
                   shape: shape,

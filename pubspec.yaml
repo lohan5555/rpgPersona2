@@ -80,7 +80,8 @@ flutter_launcher_icons:
 flutter:
   assets:
     - assets/button/
-    - assets/placeholder.jpeg
+    - assets/placeholder/placeholder.jpeg
+    - assets/placeholder/userPlaceholder.webp
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

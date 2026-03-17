@@ -174,7 +174,7 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
             top: Radius.circular(16)
         ),
         child: _partie.imgPath == null
-            ? Image.asset('assets/placeholder.jpeg', fit: BoxFit.cover)
+            ? Image.asset('assets/placeholder/placeholder.jpeg', fit: BoxFit.cover)
             : Image.file(File(_partie.imgPath!), width: 25, height: 25, fit: BoxFit.cover),
       ),
     );

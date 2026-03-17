@@ -41,7 +41,6 @@ class _PersoGeneralState extends State<PersoGeneral> {
         child: Column(
           children: [
             _header(),
-            const Divider(height: 0,),
             _note(),
           ],
         ),
@@ -50,19 +49,35 @@ class _PersoGeneralState extends State<PersoGeneral> {
   }
 
   Widget _header() {
-    return Padding(
-        padding: const EdgeInsets.only(top:12, left: 15, right: 15, bottom: 0),
-        child: AspectRatio(
-          aspectRatio: 16 / 9,
-          child: ClipRRect(
-            borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(16)
+    return Stack(
+      children: [
+        Center(
+          child: Container(
+            width: 1000,
+            height: 125,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.inversePrimary,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), bottomLeft: Radius.circular(15))
             ),
-            child: widget.perso.imgPath == null
-                ? Image.asset('assets/placeholder.jpeg', fit: BoxFit.cover)
-                : Image.file(File(widget.perso.imgPath!), width: 25, height: 25, fit: BoxFit.cover),
+          ),
+        ),
+        Center(
+          child: Padding(
+              padding: const EdgeInsets.only(top:15, left: 15, right: 15, bottom: 20),
+              child: CircleAvatar(
+                radius: 102,
+                backgroundColor: Colors.black,//Color.fromRGBO(251, 196, 58, 1.0),
+                child: CircleAvatar(
+                    radius: 100,
+                    backgroundImage: widget.perso.imgPath == null
+                        ? AssetImage("assets/placeholder/userPlaceholder.webp")
+                        : FileImage(File(widget.perso.imgPath!))
+                ),
+              )
           ),
         )
+      ],
     );
   }
 
