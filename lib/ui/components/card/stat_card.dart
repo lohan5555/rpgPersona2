@@ -25,42 +25,40 @@ class _StatCardState extends State<StatCard>{
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Card(
-          elevation: 2,
-          color: Colors.white,
-          margin: EdgeInsets.all(10),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          child: InkWell(
-            borderRadius: BorderRadius.circular(16),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    widget.stat.name,
-                    style: const TextStyle(fontSize: 16),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    widget.stat.valeur % 1 == 0
-                        ? widget.stat.valeur.toInt().toString()
-                        : widget.stat.valeur.toString(),
-                    style: const TextStyle(fontSize: 35),
-                  ),
-                ],
-              ),
+    return GestureDetector(
+      onTap: _showEditStatDialog,
+      child: Card(
+        //elevation: 2,
+        color: Colors.white,
+        margin: EdgeInsets.all(10),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Colors.black, width: 0.5),
+          borderRadius: BorderRadius.circular(16),
+
+        ),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  widget.stat.name,
+                  style: const TextStyle(fontSize: 16),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  widget.stat.valeur % 1 == 0
+                      ? widget.stat.valeur.toInt().toString()
+                      : widget.stat.valeur.toString(),
+                  style: const TextStyle(fontSize: 35),
+                ),
+              ],
             ),
           ),
         ),
-        Positioned(
-            right: 7,
-            top: 12,
-            child: IconButton(onPressed: _showEditStatDialog, icon: Icon(Icons.edit))
-        )
-      ],
+      ),
     );
   }
 

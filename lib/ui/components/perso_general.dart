@@ -1,15 +1,29 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 
 import '../../data/models/perso.dart';
+import '../../data/models/stat.dart';
+import 'card/stat_card.dart';
 
 class PersoGeneral extends StatefulWidget{
+  final List<Stat> stat;
 
   final Perso perso;
-  final Function(Perso) onEdit;
+  final Function(Perso) onEditPerso;
+  final Function(Stat) onEditStat;
+  final Function(int) onDeleteStat;
 
-  const PersoGeneral({super.key, required this.perso, required this.onEdit});
+  const PersoGeneral({
+    super.key,
+    required this.perso,
+    required this.stat,
+    required this.onEditPerso,
+    required this.onEditStat,
+    required this.onDeleteStat,
+  });
+
   @override
   State<PersoGeneral> createState() => _PersoGeneralState();
 }
@@ -20,10 +34,19 @@ class _PersoGeneralState extends State<PersoGeneral> {
   final TextEditingController _controllerNote = TextEditingController();
   final FocusNode _focusNodeNote = FocusNode();
 
+  late List<Stat> _stats;
+
   @override
   void initState(){
     super.initState();
     _controllerNote.text = widget.perso.note ?? '';
+    _stats = widget.stat;
+  }
+
+  @override
+  void didUpdateWidget(covariant PersoGeneral oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _stats = widget.stat;
   }
 
   @override
@@ -41,7 +64,8 @@ class _PersoGeneralState extends State<PersoGeneral> {
         child: Column(
           children: [
             _header(),
-            _note(),
+            Divider(height: 0,),
+            _statsList()
           ],
         ),
       ),
@@ -67,7 +91,7 @@ class _PersoGeneralState extends State<PersoGeneral> {
               padding: const EdgeInsets.only(top:15, left: 15, right: 15, bottom: 20),
               child: CircleAvatar(
                 radius: 102,
-                backgroundColor: Colors.black,//Color.fromRGBO(251, 196, 58, 1.0),
+                backgroundColor: Colors.black,
                 child: CircleAvatar(
                     radius: 100,
                     backgroundImage: widget.perso.imgPath == null
@@ -81,7 +105,46 @@ class _PersoGeneralState extends State<PersoGeneral> {
     );
   }
 
-  Widget _note() {
+  Widget _statsList(){
+    if (_stats.isEmpty) {
+      return const Expanded(
+        child:
+          Center(child: Text('Aucune statistique')),
+      );
+    }
+    return Expanded(
+        child: ReorderableGridView.builder(
+          padding: const EdgeInsets.all(10),
+          itemCount: _stats.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
+            childAspectRatio: 1,
+          ),
+          onReorder: (oldIndex, newIndex) {
+            setState(() {
+              final item = _stats.removeAt(oldIndex);
+              _stats.insert(newIndex, item);
+            });
+            for (int i = 0; i < _stats.length; i++) {
+              widget.onEditStat(_stats[i].copyWith(listPosition: i));
+            }
+          },
+          itemBuilder: (context, index) {
+            final stat = _stats[index];
+            return StatCard(
+              key: ValueKey(stat.id),
+              stat: stat,
+              onDelete: () => widget.onDeleteStat(stat.id!),
+              onEdit: widget.onEditStat,
+            );
+          },
+        )
+    ) ;
+  }
+
+  /*Widget _note() {
     return Padding(
       padding: const EdgeInsets.all(12),
       child: TextField(
@@ -98,9 +161,9 @@ class _PersoGeneralState extends State<PersoGeneral> {
         ),
         onChanged: (value) {
           Perso p = widget.perso.copyWith(note: _controllerNote.text);
-          widget.onEdit(p);
+          widget.onEditPerso(p);
         },
       ),
     );
-  }
+  }*/
 }

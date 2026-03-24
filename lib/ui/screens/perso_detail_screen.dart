@@ -4,7 +4,7 @@ import 'package:rpg_persona2/data/models/perso.dart';
 import 'package:rpg_persona2/services/item_service.dart';
 import 'package:rpg_persona2/ui/components/perso_general.dart';
 import 'package:rpg_persona2/ui/components/perso_inventaire.dart';
-import 'package:rpg_persona2/ui/components/perso_statistique.dart';
+import 'package:rpg_persona2/ui/components/perso_note.dart';
 
 import '../../data/models/stat.dart';
 import '../../services/stat_service.dart';
@@ -111,8 +111,8 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
       body: IndexedStack(
         index: _currentPageIndex,
         children: [
-          PersoStatistique(stat: _stat, onDelete: deleteStat, onEdit: updateStat),
-          PersoGeneral(perso: _perso, onEdit: widget.onEdit),
+          PersoNote(perso: _perso, onEditPerso: widget.onEdit),
+          PersoGeneral(perso: _perso, stat: _stat, onEditPerso: widget.onEdit, onEditStat: updateStat, onDeleteStat: deleteStat,),
           PersoInventaire(items: _items, onDelete: deleteItem, onEdit: updateItem)
         ],
       ),
@@ -129,7 +129,7 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
             NavigationDestination(
                 icon: Icon(Icons.query_stats_outlined),
                 selectedIcon: Icon(Icons.query_stats),
-                label: 'Caractéristique'),
+                label: 'Note'),
             NavigationDestination(
                 icon: Icon(Icons.person_outlined),
                 selectedIcon: Icon(Icons.person),
@@ -145,7 +145,7 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
   }
 
   Widget? _buildFloatingActionButton() {
-    if (_currentPageIndex == 0) {
+    if (_currentPageIndex == 1) {
       return FloatingActionButton(
         elevation: 2,
         onPressed: _showCreateStatDialog,
