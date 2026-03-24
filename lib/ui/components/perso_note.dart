@@ -39,7 +39,9 @@ class _PersoNoteState extends State<PersoNote>{
       padding: const EdgeInsets.all(12),
       child: TextField(
         controller: _controllerNote,
-        maxLines: 6,
+        maxLines: null,
+        minLines: null,
+        expands: true,
         decoration: const InputDecoration(
           labelText: 'Information sur le personnage',
           alignLabelWithHint: true,
