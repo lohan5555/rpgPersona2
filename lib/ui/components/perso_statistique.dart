@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 
 import '../../data/models/stat.dart';
 import 'card/stat_card.dart';
@@ -44,45 +45,32 @@ class _PersoStatistiqueState extends State<PersoStatistique>{
         Expanded(
           child: _stats.isEmpty
             ? const Center(child: Text('Aucune statistique'))
-            : ReorderableListView.builder(
-              proxyDecorator: (Widget child, int index, Animation<double> animation) {
-                return AnimatedBuilder(
-                  animation: animation,
-                  builder: (BuildContext context, Widget? child) {
-                    return Material(
-                      color: Colors.transparent,
-                      child: child,
-                    );
-                  },
-                  child: child,
-                );
-              },
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              itemCount: _stats.length,
-              onReorder: (oldIndex, newIndex) {
-
-                setState(() {
-                  if (newIndex > oldIndex) newIndex--;
-
-                  final item = _stats.removeAt(oldIndex);
-                  _stats.insert(newIndex, item);
-                });
-
-                for (int i = 0; i < _stats.length; i++) {
-                  widget.onEdit(
-                      _stats[i].copyWith(listPosition: i)
-                  );
-                }
-              },
-              itemBuilder: (context, index) {
-                final stat = _stats[index];
-
-                return StatCard(
-                  key: ValueKey(stat.id),
-                  stat: stat,
-                  onDelete: () => widget.onDelete(stat.id!),
-                  onEdit: widget.onEdit,
-                );
+            : ReorderableGridView.builder(
+            padding: const EdgeInsets.all(10),
+            itemCount: _stats.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              childAspectRatio: 1,
+            ),
+            onReorder: (oldIndex, newIndex) {
+              setState(() {
+                final item = _stats.removeAt(oldIndex);
+                _stats.insert(newIndex, item);
+              });
+              for (int i = 0; i < _stats.length; i++) {
+                widget.onEdit(_stats[i].copyWith(listPosition: i));
+              }
+            },
+            itemBuilder: (context, index) {
+              final stat = _stats[index];
+              return StatCard(
+                key: ValueKey(stat.id),
+                stat: stat,
+                onDelete: () => widget.onDelete(stat.id!),
+                onEdit: widget.onEdit,
+              );
             },
           ),
         ),

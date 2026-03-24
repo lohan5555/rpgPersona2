@@ -54,6 +54,8 @@ dependencies:
 
   numberpicker: ^2.1.2
 
+  reorderable_grid_view: ^2.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -28,100 +28,36 @@ class _StatCardState extends State<StatCard>{
     return Stack(
       children: [
         Card(
-          color: Colors.transparent,
-          elevation: 0,
-          margin: const EdgeInsets.only(bottom: 0),
-          shape: ContinuousRectangleBorder(),
+          elevation: 2,
+          color: Colors.white,
+          margin: EdgeInsets.all(10),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           child: InkWell(
-            onTap: () {}, // obligatoire pour que le InkWell réagisse
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16, top: 16, right: 10, bottom: 0),
+            borderRadius: BorderRadius.circular(16),
+            child: Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     widget.stat.name,
-                    style: TextStyle(fontSize: 30),
+                    style: const TextStyle(fontSize: 16),
+                    textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 8),
-                  Wrap(
-                    alignment: WrapAlignment.spaceEvenly,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: [
-                      IconButton(
-                          icon: Image.asset(
-                            "assets/button/moinsEntier.png",
-                            width: 20,
-                            height: 20,
-                          ),
-                          onPressed: () async {
-                            final statEdit = widget.stat.copyWith(
-                              valeur: round1(widget.stat.valeur-1),
-                            );
-                            widget.onEdit(statEdit);
-                          }
-                      ),
-                      IconButton(
-                          icon: Image.asset(
-                            "assets/button/moinsDecimal.png",
-                            width: 20,
-                            height: 20,
-                          ),
-                          onPressed: () async {
-                            final statEdit = widget.stat.copyWith(
-                              valeur: round1(widget.stat.valeur-0.1),
-                            );
-                            widget.onEdit(statEdit);
-                          }
-                      ),
-                      widget.stat.valeur-widget.stat.valeur.toInt()==0
-                          ?Text(
-                        widget.stat.valeur.toInt().toString(),
-                        style: TextStyle(fontSize: 30),
-                      )
-                          :Text(
-                        widget.stat.valeur.toString(),
-                        style: TextStyle(fontSize: 30),
-                      ),
-                      IconButton(
-                          icon: Image.asset(
-                            "assets/button/plusDecimal.png",
-                            width: 20,
-                            height: 20,
-                          ),
-                          onPressed: () async {
-                            final statEdit = widget.stat.copyWith(
-                              valeur: round1(widget.stat.valeur+0.1),
-                            );
-                            widget.onEdit(statEdit);
-                          }
-                      ),
-                      IconButton(
-                          icon: Image.asset(
-                            "assets/button/plusEntier.png",
-                            width: 20,
-                            height: 20,
-                          ),
-                          onPressed: () async {
-                            final statEdit = widget.stat.copyWith(
-                              valeur: round1(widget.stat.valeur+1),
-                            );
-                            widget.onEdit(statEdit);
-                          }
-                      )
-                    ],
+                  Text(
+                    widget.stat.valeur % 1 == 0
+                        ? widget.stat.valeur.toInt().toString()
+                        : widget.stat.valeur.toString(),
+                    style: const TextStyle(fontSize: 35),
                   ),
-                  SizedBox(height: 15),
-                  Divider(height: 0)
                 ],
               ),
             ),
           ),
         ),
         Positioned(
-            right: 5,
-            top: 10,
+            right: 7,
+            top: 12,
             child: IconButton(onPressed: _showEditStatDialog, icon: Icon(Icons.edit))
         )
       ],
