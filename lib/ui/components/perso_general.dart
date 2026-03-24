@@ -149,27 +149,4 @@ class _PersoGeneralState extends State<PersoGeneral> {
         )
     ) ;
   }
-
-  /*Widget _note() {
-    return Padding(
-      padding: const EdgeInsets.all(12),
-      child: TextField(
-        focusNode: _focusNodeNote,
-        onTapOutside: ((event) {
-          _focusNodeNote.unfocus();
-        }),
-        controller: _controllerNote,
-        maxLines: 6,
-        decoration: const InputDecoration(
-          labelText: 'Information sur le personnage',
-          alignLabelWithHint: true,
-          border: OutlineInputBorder(),
-        ),
-        onChanged: (value) {
-          Perso p = widget.perso.copyWith(note: _controllerNote.text);
-          widget.onEditPerso(p);
-        },
-      ),
-    );
-  }*/
 }

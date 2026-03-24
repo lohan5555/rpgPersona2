@@ -66,6 +66,8 @@ class _StatCardState extends State<StatCard>{
   double round1(double v) => double.parse(v.toStringAsFixed(1));
 
   Future<void> _showEditStatDialog() async {
+    FocusScope.of(context).unfocus(); // sinon ça ouvre le clavier
+
     final TextEditingController controllerNom = TextEditingController();
 
     controllerNom.text = widget.stat.name;
