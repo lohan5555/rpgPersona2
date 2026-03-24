@@ -8,16 +8,19 @@ import 'package:image_picker/image_picker.dart';
 import '../../data/models/perso.dart';
 import '../../services/image_service.dart';
 import 'crop_screen.dart';
+import 'home_screen.dart';
 
 
 class EditPersoForm extends StatefulWidget {
   final Perso perso;
   final Function(Perso) onChanged;
+  final VoidCallback onDelete;
 
   const EditPersoForm({
     super.key,
     required this.perso,
-    required this.onChanged
+    required this.onChanged,
+    required this.onDelete
   });
 
   @override
@@ -66,6 +69,60 @@ class _EditPersoFormState extends State<EditPersoForm> {
         title: const Text('Modifier un perso'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         foregroundColor: Colors.black,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () => showDialog<String>(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                backgroundColor: Colors.white,
+                surfaceTintColor: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                title: const Center(child: Text('Attention !')),
+                content: const Text('Êtes-vous sur de vouloir supprimer ce personnage ? Cette action est définitive.'),
+                actions: [
+                  Row(
+                    children: [
+                      Expanded(
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            ),
+                            onPressed: () => Navigator.pop(context, 'Cancel'),
+                            child: const Text('Annuler', style: TextStyle(color: Colors.grey)),
+                          )
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                          child: TextButton(
+                              style: TextButton.styleFrom(
+                                backgroundColor: Color.fromRGBO(233, 193, 108, 1),
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context, 'OK');
+                                widget.onDelete();
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Personnage supprimée avec succès')),
+                                );
+
+                                // navigue jusqu'à la racine
+                                Navigator.of(context).popUntil((route) => route.isFirst);
+                              },
+                              child: const Text('OK')
+                          )
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
       ),
       body: SafeArea(
           child:SingleChildScrollView(

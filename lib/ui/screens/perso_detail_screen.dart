@@ -13,8 +13,9 @@ import 'edit_perso_form.dart';
 class PersoDetailPage extends StatefulWidget {
   final Perso perso;
   final Function(Perso) onEdit;
+  final VoidCallback onDelete;
 
-  const PersoDetailPage({super.key, required this.perso, required this.onEdit});
+  const PersoDetailPage({super.key, required this.perso, required this.onEdit, required this.onDelete});
 
   @override
   State<PersoDetailPage> createState() => _PersoDetailPageState();
@@ -93,7 +94,9 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
                         setState(() {
                           _perso = updatePerso;
                         });
-                      }),
+                      },
+                      onDelete: widget.onDelete,
+                    ),
                   )
               );
 
