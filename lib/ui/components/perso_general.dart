@@ -64,7 +64,6 @@ class _PersoGeneralState extends State<PersoGeneral> {
         child: Column(
           children: [
             _header(),
-            Divider(height: 0,),
             _statsList()
           ],
         ),
