@@ -111,6 +111,10 @@ class _EditPartieFormState extends State<EditPartieForm> {
                             Navigator.pop(context, 'OK');
                             widget.onDelete();
 
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Partie supprimée avec succès')),
+                            );
+
                             // navigue jusqu'à la racine
                             Navigator.of(context).popUntil((route) => route.isFirst);
                           },
