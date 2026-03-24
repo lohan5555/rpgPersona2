@@ -43,10 +43,6 @@ class _MyHomePageState extends State<MyHomePage> {
     await partieService.deletePartie(id, perso, partie);
     await partieService.updatePartieListPosition();
     await _loadPartie();
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Partie supprimée')),
-    );
   }
 
   Future<void> miseAJourPartie(Partie partie) async {

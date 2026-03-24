@@ -163,10 +163,6 @@ class _StatCardState extends State<StatCard>{
                           widget.onEdit(statModifier);
 
                           Navigator.pop(context);
-
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Stat Modifier')),
-                          );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color.fromRGBO(233, 193, 108, 1),

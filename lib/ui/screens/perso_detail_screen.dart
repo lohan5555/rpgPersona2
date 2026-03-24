@@ -56,18 +56,12 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
   Future<void> deleteStat(int id) async {
     await statservice.deleteStat(id);
     await _loadStat();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Caractéristique supprimée')),
-    );
   }
 
   Future<void> deleteItem(int id) async {
     await itemService.deleteItem(id);
     await itemService.updateItemListPosition();
     await _loadItem();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Item supprimée')),
-    );
   }
 
   Future<void> updateStat(Stat stat) async{
@@ -237,10 +231,6 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
                       await _loadStat();
 
                       Navigator.pop(context);
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Stat créée')),
-                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromRGBO(233, 193, 108, 1),
@@ -335,10 +325,6 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
                       await _loadItem();
 
                       Navigator.pop(context);
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Objet créée')),
-                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromRGBO(233, 193, 108, 1),

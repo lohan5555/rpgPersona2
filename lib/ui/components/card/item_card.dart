@@ -190,10 +190,6 @@ class _ItemCardState extends State<ItemCard>{
                       widget.onEdit(itemModifier);
 
                       Navigator.pop(context);
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Objet Modifier')),
-                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromRGBO(233, 193, 108, 1),
