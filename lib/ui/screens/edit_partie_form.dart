@@ -5,6 +5,7 @@ import 'package:custom_image_crop/custom_image_crop.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rpg_persona2/services/emoji_service.dart';
+import 'package:rpg_persona2/ui/screens/home_screen.dart';
 
 import '../../data/models/partie.dart';
 import '../../services/image_service.dart';
@@ -14,11 +15,13 @@ import 'crop_screen.dart';
 class EditPartieForm extends StatefulWidget {
   final Partie partie;
   final Function(Partie) onChanged;
+  final VoidCallback onDelete;
 
   const EditPartieForm({
     super.key,
     required this.partie,
-    required this.onChanged
+    required this.onChanged,
+    required this.onDelete,
   });
 
   @override
@@ -71,6 +74,56 @@ class _EditPartieFormState extends State<EditPartieForm> {
         title: const Text('Modifier une Partie'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         foregroundColor: Colors.black,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () => showDialog<String>(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                backgroundColor: Colors.white,
+                surfaceTintColor: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                title: const Center(child: Text('Attention !')),
+                content: const Text('Êtes-vous sur de vouloir supprimer cette partie ? Cette action est définitive.'),
+                actions: [
+                  Row(
+                    children: [
+                      Expanded(
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            ),
+                            onPressed: () => Navigator.pop(context, 'Cancel'),
+                            child: const Text('Annuler', style: TextStyle(color: Colors.grey)),
+                          )
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            backgroundColor: Color.fromRGBO(233, 193, 108, 1),
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context, 'OK');
+                            widget.onDelete();
+
+                            // navigue jusqu'à la racine
+                            Navigator.of(context).popUntil((route) => route.isFirst);
+                          },
+                          child: const Text('OK')
+                        )
+                      ),
+                    ],
+                  )
+                ]
+              ),
+            ),
+          )
+        ],
       ),
       body: SafeArea(
         child:SingleChildScrollView(

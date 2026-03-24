@@ -10,11 +10,13 @@ import 'package:rpg_persona2/ui/screens/edit_partie_form.dart';
 class PartieDetailPage extends StatefulWidget {
   final Partie partie;
   final Function(Partie) onEdit;
+  final VoidCallback onDelete;
 
   const PartieDetailPage({
     super.key,
     required this.partie,
-    required this.onEdit
+    required this.onEdit,
+    required this.onDelete,
   });
 
   @override
@@ -119,7 +121,8 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
                       setState(() {
                         _partie = updatePartie;
                       });
-                    }
+                    },
+                    onDelete: widget.onDelete,
                   ),
                 ),
               );

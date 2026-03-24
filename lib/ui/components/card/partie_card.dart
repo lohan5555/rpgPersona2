@@ -29,7 +29,7 @@ class PartieCard extends StatelessWidget{
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => PartieDetailPage(partie: partie, onEdit: onEdit),
+                  builder: (_) => PartieDetailPage(partie: partie, onEdit: onEdit, onDelete: onDelete,),
                 ),
               );
             },
@@ -74,51 +74,7 @@ class PartieCard extends StatelessWidget{
                       ],
                     ),
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () => showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        backgroundColor: Colors.white,
-                        surfaceTintColor: Colors.white,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                        title: const Center(child: Text('Attention !')),
-                        content: const Text('Êtes-vous sur de vouloir supprimer cette partie ? Cette action est définitive.'),
-                        actions: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: TextButton(
-                                  style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.symmetric(vertical: 12),
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                  ),
-                                  onPressed: () => Navigator.pop(context, 'Cancel'),
-                                  child: const Text('Annuler', style: TextStyle(color: Colors.grey)),
-                                )
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: TextButton(
-                                  style: TextButton.styleFrom(
-                                    backgroundColor: Color.fromRGBO(233, 193, 108, 1),
-                                    foregroundColor: Colors.white,
-                                    padding: const EdgeInsets.symmetric(vertical: 12),
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                  ),
-                                  onPressed: () => {
-                                    Navigator.pop(context, 'OK'),
-                                    onDelete()
-                                  },
-                                  child: const Text('OK')
-                                )
-                              ),
-                            ],
-                          )
-                        ]
-                      ),
-                    ),
-                  )
+                  Icon(Icons.drag_handle),
                 ],
               )
             ),
