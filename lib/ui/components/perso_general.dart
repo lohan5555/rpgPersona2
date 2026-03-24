@@ -114,6 +114,12 @@ class _PersoGeneralState extends State<PersoGeneral> {
     }
     return Expanded(
         child: ReorderableGridView.builder(
+          dragWidgetBuilder: (index, child) {
+            return Material(
+              color: Colors.transparent,
+              child: child,
+            );
+          },
           padding: const EdgeInsets.all(10),
           itemCount: _stats.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
