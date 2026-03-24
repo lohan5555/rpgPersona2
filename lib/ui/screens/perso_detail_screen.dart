@@ -127,8 +127,8 @@ class _PersoDetailPageState extends State<PersoDetailPage> {
           selectedIndex: _currentPageIndex,
           destinations: [
             NavigationDestination(
-                icon: Icon(Icons.query_stats_outlined),
-                selectedIcon: Icon(Icons.query_stats),
+                icon: Icon(Icons.book_outlined),
+                selectedIcon: Icon(Icons.menu_book_rounded),
                 label: 'Note'),
             NavigationDestination(
                 icon: Icon(Icons.person_outlined),
