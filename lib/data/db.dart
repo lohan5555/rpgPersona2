@@ -33,6 +33,7 @@ class DatabaseService {
             note TEXT,
             imgPath TEXT,
             listPosition INT NOT NULL,
+            alive BOOLEAN NOT NULL,
             partieId INTEGER NOT NULL,
             FOREIGN KEY (partieId) REFERENCES partie (id) ON DELETE CASCADE
           )
@@ -78,6 +79,7 @@ class DatabaseService {
             "Il est gentil mais j'en ferai pas un elevage",
             NULL,
             0,
+            1,
             1
           )
         ''');

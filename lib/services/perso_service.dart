@@ -29,6 +29,7 @@ class PersoService{
           desc: map['desc'] as String?,
           note: map['note'] as String?,
           listPosition: map['listPosition'] as int,
+          alive: map['alive'] as int,
           imgPath: map['imgPath'] as String?,
           partieId: map['partieId'] as int
         ),
@@ -52,6 +53,7 @@ class PersoService{
             desc: map['desc'] as String?,
             note: map['note'] as String?,
             listPosition: map['listPosition'] as int,
+            alive: map['alive'] as int,
             imgPath: map['imgPath'] as String?,
             partieId: map['partieId'] as int
         ),

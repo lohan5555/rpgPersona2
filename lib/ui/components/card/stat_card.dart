@@ -44,7 +44,7 @@ class _StatCardState extends State<StatCard>{
               children: [
                 Text(
                   widget.stat.name,
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16,overflow: TextOverflow.ellipsis),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),

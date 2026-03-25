@@ -81,6 +81,7 @@ flutter_launcher_icons:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
+    - assets/skull.png
     - assets/button/
     - assets/placeholder/placeholder.jpeg
     - assets/placeholder/userPlaceholder.webp

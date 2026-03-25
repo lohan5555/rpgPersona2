@@ -42,15 +42,36 @@ class PersoCard extends StatelessWidget{
                   Expanded(
                     child: Row(
                       children: [
-                        CircleAvatar(
-                          radius: 26,
-                          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                          backgroundImage: perso.imgPath != null && perso.imgPath!.isNotEmpty
-                              ? FileImage(File(perso.imgPath!))
-                              : null,
-                          child: perso.imgPath == null || perso.imgPath!.isEmpty
-                              ? const Icon(Icons.person, size: 30)
-                              : null,
+                        Stack(
+                          children: [
+                            CircleAvatar(
+                              radius: 26,
+                              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                              backgroundImage: perso.imgPath != null && perso.imgPath!.isNotEmpty
+                                  ? FileImage(File(perso.imgPath!))
+                                  : null,
+                              child: perso.imgPath == null || perso.imgPath!.isEmpty
+                                  ? const Icon(Icons.person, size: 30)
+                                  : null,
+                            ),
+                            if(perso.alive == 0)...[
+                              PositionedDirectional(
+                                end: 0,
+                                bottom: 0,
+                                child: CircleAvatar(
+                                  radius: 11,
+                                    backgroundColor: Colors.black,
+                                      child: CircleAvatar(
+                                        radius: 10,
+                                        backgroundColor: Color.fromRGBO(244, 10, 10, 1.0),
+                                        child: Image.asset("assets/skull.png", height: 16, width: 16),
+                                      )
+                                  )
+                                ,
+                              )
+                            ]
+
+                          ],
                         ),
                         const SizedBox(width: 20),
                         Expanded(

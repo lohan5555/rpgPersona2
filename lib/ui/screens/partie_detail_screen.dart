@@ -324,6 +324,7 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
                               name: controllerNom.text.trim(),
                               desc: controllerDesc.text.trim(),
                               listPosition: _perso.length,
+                              alive: 1,
                               partieId: _partie.id!
                           );
 

@@ -5,6 +5,7 @@ class Perso{
   final String? note;
   final String? imgPath;
   final int listPosition;
+  final int alive;
   final int partieId;
 
   const Perso(
@@ -15,6 +16,7 @@ class Perso{
         this.note,
         this.imgPath,
         required this.listPosition,
+        required this.alive,
         required this.partieId
       }
   );
@@ -28,13 +30,14 @@ class Perso{
       'note': note,
       'imgPath' : imgPath,
       'listPosition' : listPosition,
+      'alive' : alive,
       'partieId' : partieId,
     };
   }
 
   @override
   String toString() {
-    return 'Partie{id: $id, name: $name, desc: $desc, note: $note, imgPath: $imgPath, listPosition: $listPosition, partieId: $partieId}';
+    return 'Partie{id: $id, name: $name, desc: $desc, note: $note, imgPath: $imgPath, listPosition: $listPosition, alive: $alive, partieId: $partieId}';
   }
 
   Perso copyWith({
@@ -43,6 +46,7 @@ class Perso{
     String? note,
     String? imgPath,
     int? listPosition,
+    int? alive,
     int? partieId
   }) {
     return Perso(
@@ -51,6 +55,7 @@ class Perso{
         desc: desc ?? this.desc,
         note: note ?? this.note,
         imgPath: imgPath ?? this.imgPath,
+        alive: alive ?? this.alive,
         listPosition: listPosition ?? this.listPosition,
         partieId: partieId ?? this.partieId
     );
