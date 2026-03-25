@@ -8,7 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import '../../data/models/perso.dart';
 import '../../services/image_service.dart';
 import 'crop_screen.dart';
-import 'home_screen.dart';
 
 
 class EditPersoForm extends StatefulWidget {

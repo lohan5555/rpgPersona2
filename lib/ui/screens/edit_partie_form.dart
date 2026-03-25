@@ -5,7 +5,6 @@ import 'package:custom_image_crop/custom_image_crop.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rpg_persona2/services/emoji_service.dart';
-import 'package:rpg_persona2/ui/screens/home_screen.dart';
 
 import '../../data/models/partie.dart';
 import '../../services/image_service.dart';
