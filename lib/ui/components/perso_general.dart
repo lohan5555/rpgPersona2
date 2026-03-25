@@ -35,12 +35,14 @@ class _PersoGeneralState extends State<PersoGeneral> {
   final FocusNode _focusNodeNote = FocusNode();
 
   late List<Stat> _stats;
+  late bool _alive;
 
   @override
   void initState(){
     super.initState();
     _controllerNote.text = widget.perso.note ?? '';
     _stats = widget.stat;
+    widget.perso.alive == 1 ? _alive = true : _alive = false;
   }
 
   @override
@@ -68,6 +70,26 @@ class _PersoGeneralState extends State<PersoGeneral> {
           ],
         ),
       ),
+      floatingActionButton: Column(
+        children: [
+          Text(_alive ? "Vivant" : "Mort"),
+          Switch(
+            value: _alive,
+            activeTrackColor: Color.fromRGBO(233, 193, 108, 1),
+            trackOutlineColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+              return Colors.grey[700];
+            }),
+            onChanged: (bool value) {
+              setState(() {
+                _alive = value;
+              });
+              Perso p = widget.perso.copyWith(alive: value ? 1 : 0);
+              widget.onEditPerso(p);
+            },
+          ),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
     );
   }
 
