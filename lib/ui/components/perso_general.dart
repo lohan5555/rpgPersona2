@@ -115,6 +115,9 @@ class _PersoGeneralState extends State<PersoGeneral> {
         child: ReorderableGridView.builder(
           dragWidgetBuilder: (index, child) {
             return Material(
+              elevation: 1,
+              shadowColor: Colors.black.withValues(alpha: 0.5),
+              borderRadius: BorderRadius.circular(7),
               color: Colors.transparent,
               child: child,
             );
@@ -122,7 +125,7 @@ class _PersoGeneralState extends State<PersoGeneral> {
           padding: const EdgeInsets.all(10),
           itemCount: _stats.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
+            crossAxisCount: 3,
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,
             childAspectRatio: 1,

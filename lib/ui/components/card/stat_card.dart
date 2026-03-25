@@ -28,12 +28,12 @@ class _StatCardState extends State<StatCard>{
     return GestureDetector(
       onTap: _showEditStatDialog,
       child: Card(
-        //elevation: 2,
+        elevation: 1,
         color: Colors.white,
-        margin: EdgeInsets.all(10),
+        margin: EdgeInsets.all(7),
         shape: RoundedRectangleBorder(
           side: BorderSide(color: Colors.black, width: 0.5),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(5),
 
         ),
         child: InkWell(
