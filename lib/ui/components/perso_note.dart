@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../data/models/perso.dart';
@@ -19,6 +21,7 @@ class PersoNote extends StatefulWidget {
 class _PersoNoteState extends State<PersoNote>{
 
   final TextEditingController _controllerNote = TextEditingController();
+  Timer? _debounce;
 
   @override
   void initState() {
@@ -29,7 +32,17 @@ class _PersoNoteState extends State<PersoNote>{
   @override
   void dispose() {
     _controllerNote.dispose();
+    _debounce?.cancel();
     super.dispose();
+  }
+
+  void _autoSave(String value) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      final p = widget.perso.copyWith(note: value);
+      widget.onEditPerso(p);
+    });
   }
 
 
@@ -47,10 +60,7 @@ class _PersoNoteState extends State<PersoNote>{
           alignLabelWithHint: true,
           border: InputBorder.none,
         ),
-        onChanged: (value) {
-          Perso p = widget.perso.copyWith(note: _controllerNote.text);
-          widget.onEditPerso(p);
-        },
+        onChanged: _autoSave,
       ),
     );
   }

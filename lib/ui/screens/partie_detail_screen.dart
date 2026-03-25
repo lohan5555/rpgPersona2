@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -33,6 +34,7 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
   final TextEditingController _controllerNote = TextEditingController();
   final FocusNode _focusNodeNote = FocusNode();
   bool focusText = false;
+  Timer? _debounce;
 
   @override
   void initState(){
@@ -53,6 +55,7 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
   void dispose() {
     _controllerNote.dispose();
     _focusNodeNote.dispose();
+    _debounce?.cancel();
     super.dispose();
   }
 
@@ -100,6 +103,15 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
     }
 
     await _loadPerso();
+  }
+
+  void _autoSave(String value) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      Partie p = _partie.copyWith(note: _controllerNote.text);
+      widget.onEdit(p);
+    });
   }
 
   @override
@@ -194,10 +206,7 @@ class _PartieDetailPageState extends State<PartieDetailPage> {
           hintText: "Notes de la partie",
           border: InputBorder.none,
         ),
-        onChanged: (value) {
-          Partie p = _partie.copyWith(note: _controllerNote.text);
-          widget.onEdit(p);
-        },
+        onChanged: _autoSave,
       ),
     );
   }
