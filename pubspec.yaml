@@ -82,7 +82,6 @@ flutter_launcher_icons:
 flutter:
   assets:
     - assets/skull.png
-    - assets/button/
     - assets/placeholder/placeholder.jpeg
     - assets/placeholder/userPlaceholder.webp
 
