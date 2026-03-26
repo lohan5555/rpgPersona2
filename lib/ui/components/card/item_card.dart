@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 import '../../../data/models/item.dart';
 
@@ -104,106 +105,124 @@ class _ItemCardState extends State<ItemCard>{
     final TextEditingController controllerDesc = TextEditingController();
 
     controllerNom.text = widget.item.name;
+    int valeur = widget.item.quantity;
+
     if(widget.item.desc != null) {controllerDesc.text = widget.item.desc!;}
 
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          title: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Expanded(child: Text("Modifier l'objet",overflow: TextOverflow.ellipsis)),
-                IconButton(
-                  onPressed: () async {
-                    bool deleted = await _showDeleteItemDialog();
+        return StatefulBuilder(
+          builder: (context, setStateDialog){
+            return AlertDialog(
+              backgroundColor: Colors.white,
+              surfaceTintColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              title: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Expanded(child: Text("Modifier l'objet",overflow: TextOverflow.ellipsis)),
+                    IconButton(
+                        onPressed: () async {
+                          bool deleted = await _showDeleteItemDialog();
 
-                    if (deleted) {
-                      Navigator.pop(context);
-                    }
-                  },
-                  icon: Icon(Icons.delete)
-                )
-              ],
-            ),
-          ),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                TextField(
-                  controller: controllerNom,
-                  decoration: InputDecoration(
-                    labelText: "Nom de l'objet",
-                    filled: true,
-                    fillColor: Colors.grey[50],
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
+                          if (deleted) {
+                            Navigator.pop(context);
+                          }
+                        },
+                        icon: Icon(Icons.delete)
+                    )
+                  ],
                 ),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: controllerDesc,
-                  maxLines: 3,
-                  decoration: InputDecoration(
-                    labelText: "Description de l'objet",
-                    filled: true,
-                    fillColor: Colors.grey[50],
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide.none,
+              ),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    TextField(
+                      controller: controllerNom,
+                      decoration: InputDecoration(
+                        labelText: "Nom de l'objet",
+                        filled: true,
+                        fillColor: Colors.grey[50],
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
                     ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          actions: [
-            Row(
-              children: [
-                Expanded(
-                  child: TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: controllerDesc,
+                      maxLines: 3,
+                      decoration: InputDecoration(
+                        labelText: "Description de l'objet",
+                        filled: true,
+                        fillColor: Colors.grey[50],
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
                     ),
-                    child: const Text('Annuler'),
-                  ),
+                    const Center(child: Text('Quantité')),
+                    NumberPicker(
+                      value: valeur,
+                      minValue: -100000,
+                      maxValue: 100000,
+                      onChanged: (newValue) {
+                        setStateDialog(() {
+                          valeur = newValue;
+                        });
+                      },
+                    )
+                  ],
                 ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      if (controllerNom.text.trim().isEmpty) return;
-
-                      final itemModifier = widget.item.copyWith(
-                        name: controllerNom.text.trim(),
-                        desc: controllerDesc.text.trim()
-                      );
-
-                      widget.onEdit(itemModifier);
-
-                      Navigator.pop(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromRGBO(233, 193, 108, 1),
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              actions: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                        child: const Text('Annuler'),
+                      ),
                     ),
-                    child: const Text('Modifier'),
-                  )
-                )
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (controllerNom.text.trim().isEmpty) return;
+
+                          final itemModifier = widget.item.copyWith(
+                            name: controllerNom.text.trim(),
+                            desc: controllerDesc.text.trim(),
+                            quantity: valeur
+                          );
+
+                          widget.onEdit(itemModifier);
+
+                          Navigator.pop(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromRGBO(233, 193, 108, 1),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                        child: const Text('Modifier'),
+                      )
+                    )
+                  ],
+                ),
               ],
-            ),
-          ],
+            );
+          },
         );
       },
     );
