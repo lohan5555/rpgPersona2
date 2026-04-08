@@ -49,7 +49,7 @@ class _ItemCardState extends State<ItemCard>{
                       children: [
                         if(!focusCard) ...[
                           Text(
-                            widget.item.name,
+                            "${widget.item.quantity.toString()} ${widget.item.name}",
                             style: Theme.of(context).textTheme.titleLarge,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -57,7 +57,7 @@ class _ItemCardState extends State<ItemCard>{
                         ],
                         if(focusCard)...[
                           Text(
-                            widget.item.name,
+                            "${widget.item.quantity.toString()} ${widget.item.name}",
                             style: Theme.of(context).textTheme.titleLarge,
                           )
                         ],
@@ -72,24 +72,10 @@ class _ItemCardState extends State<ItemCard>{
                       ],
                     ),
                   ),
-                  Row(
-                    children: [
-                      IconButton(onPressed: () async{
-                        final editItem = widget.item.copyWith(quantity: widget.item.quantity -1);
-                        widget.onEdit(editItem);
-                      }, 
-                      icon: const Icon(Icons.remove),
-                      iconSize: 15),
-                      Text(widget.item.quantity.toString()),
-                      IconButton(onPressed: () async{
-                        final editItem = widget.item.copyWith(quantity: widget.item.quantity +1);
-                        widget.onEdit(editItem);
-                      },
-                      icon: const Icon(Icons.add),
-                      iconSize: 15),
+
+
                       IconButton(onPressed: _showEditItemDialog, icon: Icon(Icons.edit, size: 20))
-                    ],
-                  ),
+
                 ],
               )
             ),
